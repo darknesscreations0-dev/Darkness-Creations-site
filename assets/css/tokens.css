@@ -1,0 +1,92 @@
+/* ============================================================
+   DARKNESS CREATIONS — DESIGN TOKENS
+   Shared across every brand page. Do not hardcode raw hex
+   values outside this file — reference the variables instead.
+   ============================================================ */
+
+:root{
+  /* --- Core surfaces --- */
+  --bg:            #050505;
+  --surface:       #0c0c0e;
+  --surface-2:     #131316;
+  --surface-3:     #1b1b1f;
+  --border:        rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.16);
+
+  /* --- Text --- */
+  --text:          #f5f5f7;
+  --text-dim:      #a1a1aa;
+  --text-faint:    #6b6b72;
+
+  /* --- Accent (Darkness Creations) --- */
+  --accent:        #8B5CF6;
+  --accent-2:      #6366F1;
+  --accent-soft:   rgba(139,92,246,0.14);
+  --accent-glow:   rgba(139,92,246,0.35);
+
+  /* --- Type scale --- */
+  --font-display: 'Clash Display', 'Inter', sans-serif;
+  --font-script:  'Instrument Serif', 'Georgia', serif;
+  --font-body:    'Inter', sans-serif;
+
+  --fs-hero:   clamp(2.75rem, 6.5vw, 6.4rem);
+  --fs-h1:     clamp(2.25rem, 4.2vw, 3.6rem);
+  --fs-h2:     clamp(1.5rem, 2.4vw, 2.1rem);
+  --fs-lead:   clamp(1.05rem, 1.4vw, 1.35rem);
+  --fs-body:   1rem;
+  --fs-small:  0.85rem;
+
+  /* --- Spacing --- */
+  --section-pad: clamp(5rem, 11vw, 10rem);
+  --gutter:      clamp(1.5rem, 5vw, 6rem);
+  --radius-sm:   12px;
+  --radius-md:   20px;
+  --radius-lg:   28px;
+
+  /* --- Motion --- */
+  --ease: cubic-bezier(.16,.8,.24,1);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ background:var(--bg); }
+html.lenis{ height:auto; }
+.lenis.lenis-smooth{ scroll-behavior:auto; }
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:var(--fs-body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; }
+ul{ margin:0; padding:0; list-style:none; }
+h1,h2,h3,p{ margin:0; }
+
+.container{
+  max-width:1280px;
+  margin-inline:auto;
+  padding-inline:var(--gutter);
+}
+
+/* Respect reduced motion everywhere */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+}
+
+/* Visible keyboard focus */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:6px;
+}
+
+::selection{ background:var(--accent); color:#fff; }
