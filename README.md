@@ -58,7 +58,47 @@ has its own store.
 2. In the repo settings → Pages → set the source to the `main` branch, root folder.
 3. All asset paths are relative, so this also works if the repo is served from a subpath (e.g. `username.github.io/darkness-creations/`).
 
-## Notes
+## Admin panel (real backend via Supabase)
+
+`admin.html` is a password-protected dashboard for adding, editing and deleting
+products — for both the Darkness Creations marketplace and the Crispy Pizza store —
+including image and video uploads. It's backed by **Supabase** (free tier), a real
+database + file storage service, so products you add show up live for every visitor,
+not just you.
+
+### One-time setup
+
+1. Create a free project at **supabase.com**.
+2. In your project: **SQL Editor → New query** → paste the entire contents of
+   `assets/sql/supabase-setup.sql` → **Run**. This creates the products table,
+   security rules, and the storage bucket for images/videos/files.
+3. **Authentication → Users → Add user** → create one login (your email + a password).
+   This is the only account that can access `admin.html`.
+4. **Project Settings → API** → copy your **Project URL** and **anon public key**.
+5. Open `assets/js/supabase-config.js` and paste those two values in where indicated.
+6. Re-upload the site (or just that one file) to GitHub.
+
+### Using it
+
+- Go to `yoursite.com/admin.html`, log in with the account from step 3.
+- Switch between the "Darkness Creations Marketplace" and "Crispy Pizza Store" tabs
+  at the top — products are kept separate per your earlier call.
+- Add a product: name, category, price (or mark it free), description, tags, and
+  optionally an image, a preview video, and the actual downloadable file. Hit
+  **Add product** — it appears on the live marketplace page immediately.
+- Click **Edit** or **Delete** on any existing product in the list on the right.
+
+### What's still missing before a real launch
+
+- **Payments.** "Buy now" currently just links to the uploaded file directly — there's
+  no checkout, so right now anyone with the link can download a paid file for free.
+  Before selling anything for real, wire this to Stripe or a similar processor so the
+  file link is only revealed after payment.
+- **`admin.html` isn't hidden from search engines by more than a `noindex` tag** — the
+  page itself is reachable by anyone who finds the URL, but they can't do anything
+  without your login. Still, don't link to it publicly.
+
+
 
 - All animation libraries (GSAP, ScrollTrigger, Lenis) are loaded via CDN — no npm/build step needed.
 - Fonts: Clash Display (display) via Fontshare, Inter (body) via Google Fonts — both CDN-linked.
