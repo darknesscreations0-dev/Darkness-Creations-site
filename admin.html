@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Darkness Creations</title>
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<section class="admin-login">
+  <div class="admin-login__box">
+    <h1>Admin login</h1>
+    <p>Sign in with the account you created in Supabase → Authentication → Users.</p>
+    <form data-admin-login-form>
+      <input type="email" name="email" placeholder="you@email.com" required autocomplete="username">
+      <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
+      <button type="submit" class="btn btn--primary" style="justify-content:center; margin-top:.4rem;"><span>Log in</span></button>
+      <p class="admin-login__error"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ ADMIN APP (hidden until logged in) ============ -->
+<div class="admin-shell" style="display:none;">
+  <header class="admin-bar">
+    <span class="admin-bar__title">Darkness Creations — Admin</span>
+    <div class="admin-bar__actions">
+      <a href="index.html" style="color:var(--text-dim); font-size:.85rem;">← Back to site</a>
+      <button data-admin-logout class="btn btn--ghost"><span>Log out</span></button>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="admin-tabs">
+      <button class="admin-tab is-active" data-brand="darkness-creations">Darkness Creations Marketplace</button>
+      <button class="admin-tab" data-brand="crispy-pizza">Crispy Pizza Store</button>
+    </div>
+
+    <div class="admin-grid">
+      <!-- ---------- Form ---------- -->
+      <div class="admin-panel">
+        <h2>Add / edit product</h2>
+        <form data-product-form>
+          <div class="admin-field">
+            <label for="p-name">Product name</label>
+            <input id="p-name" name="name" type="text" required>
+          </div>
+
+          <div class="admin-field--row">
+            <div class="admin-field">
+              <label for="p-category">Category</label>
+              <input id="p-category" name="category" type="text" placeholder="e.g. templates, plugins" required>
+            </div>
+            <div class="admin-field">
+              <label for="p-price">Price ($)</label>
+              <input id="p-price" name="price" type="number" step="0.01" min="0">
+            </div>
+          </div>
+
+          <label class="admin-check">
+            <input type="checkbox" name="is_free" id="p-free">
+            This product is free
+          </label>
+
+          <div class="admin-field">
+            <label for="p-desc">Description</label>
+            <textarea id="p-desc" name="description" placeholder="Short description shown on the product card"></textarea>
+          </div>
+
+          <div class="admin-field--row">
+            <div class="admin-field">
+              <label for="p-badge">Badge (optional)</label>
+              <input id="p-badge" name="badge" type="text" placeholder="e.g. Bestseller, New">
+            </div>
+            <div class="admin-field">
+              <label for="p-tags">Tags (comma separated)</label>
+              <input id="p-tags" name="tags" type="text" placeholder=".aep, Premiere Pro">
+            </div>
+          </div>
+
+          <div class="admin-field">
+            <label for="p-image">Product image / thumbnail</label>
+            <input id="p-image" type="file" accept="image/*">
+            <p class="admin-file-hint">Shown on the product card.</p>
+          </div>
+
+          <div class="admin-field">
+            <label for="p-video">Preview / demo video (optional)</label>
+            <input id="p-video" type="file" accept="video/*">
+            <p class="admin-file-hint">For a before/after or showcase clip, like EarnEdits' preview player.</p>
+          </div>
+
+          <div class="admin-field">
+            <label for="p-file">Downloadable product file (optional)</label>
+            <input id="p-file" type="file">
+            <p class="admin-file-hint">The actual .aep / .prproj / .zip customers receive after buying.</p>
+          </div>
+
+          <div class="admin-submit-row">
+            <button type="submit" class="btn btn--primary"><span data-submit-label>Add product</span></button>
+          </div>
+          <p class="admin-msg" data-form-msg></p>
+        </form>
+      </div>
+
+      <!-- ---------- List ---------- -->
+      <div class="admin-panel">
+        <h2>Existing products</h2>
+        <div class="admin-list" data-product-list>
+          <p class="admin-empty">Loading…</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script>window.supabaseClient = supabaseClient;</script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>
