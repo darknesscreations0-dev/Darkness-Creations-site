@@ -90,3 +90,91 @@ input:focus-visible{
 }
 
 ::selection{ background:var(--accent); color:#fff; }
+
+/* ============================================================
+   SHARED AUTH UI (login modal + account slot)
+   Used across every page — home, marketplace, Crispy Pizza.
+   ============================================================ */
+[data-dc-account]{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+}
+.dc-coin-badge{
+  font-size:.82rem;
+  padding:.35rem .7rem;
+  border-radius:999px;
+  border:1px solid var(--border-strong);
+  background:rgba(255,255,255,0.04);
+}
+.dc-account-name{ font-size:.88rem; font-weight:500; }
+.dc-account-logout{
+  font-size:.78rem;
+  color:var(--text-faint);
+  background:none;
+  border:none;
+  text-decoration:underline;
+}
+
+.dc-auth-modal{
+  position:fixed; inset:0;
+  z-index:1000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.dc-auth-modal.is-open{ display:flex; }
+.dc-auth-modal__backdrop{
+  position:absolute; inset:0;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(4px);
+}
+.dc-auth-modal__box{
+  position:relative;
+  z-index:1;
+  width:min(380px, 90vw);
+  background:var(--surface-2);
+  border:1px solid var(--border-strong);
+  border-radius:var(--radius-lg);
+  padding:2.2rem;
+}
+.dc-auth-modal__x{
+  position:absolute; top:1rem; right:1rem;
+  background:none; border:none;
+  color:var(--text-faint);
+  font-size:1.4rem;
+  line-height:1;
+}
+.dc-auth-modal__eyebrow{
+  font-size:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--accent);
+}
+.dc-auth-modal__box h3{
+  font-family:var(--font-display);
+  font-size:1.5rem;
+  font-weight:500;
+  margin-top:.5rem;
+}
+.dc-auth-modal__box p{
+  color:var(--text-dim);
+  font-size:.9rem;
+  margin-top:.6rem;
+}
+.dc-auth-modal__box form{ margin-top:1.4rem; }
+.dc-auth-modal__box input{
+  width:100%;
+  padding:.85rem 1.1rem;
+  border-radius:10px;
+  border:1px solid var(--border-strong);
+  background:rgba(255,255,255,0.03);
+  color:var(--text);
+  font-size:.95rem;
+}
+.dc-auth-modal__note{
+  margin-top:1rem;
+  font-size:.76rem;
+  color:var(--text-faint);
+  text-align:center;
+}

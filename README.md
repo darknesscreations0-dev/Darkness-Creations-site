@@ -10,17 +10,41 @@ darkness-creations/
 ├── marketplace.html            ← Full marketplace: project files, presets, plugins, courses
 ├── assets/
 │   ├── css/
-│   │   ├── tokens.css          ← Shared design tokens (colors, type, spacing) — used by every page/brand
-│   │   ├── home.css            ← Styles scoped to the Home page
-│   │   └── marketplace.css     ← Styles scoped to the Marketplace page
+│   │   ├── tokens.css          ← Shared design tokens + shared login modal styles
+│   │   ├── home.css
+│   │   └── marketplace.css
 │   └── js/
-│       ├── main.js             ← Lenis smooth scroll, GSAP reveals, cursor glow, pipeline scrub
-│       └── marketplace.js      ← Category filters, search, wishlist toggle, cart counter (front-end only)
+│       ├── auth.js             ← Shared fake-login system (see note below)
+│       ├── main.js
+│       └── marketplace.js
 └── brands/
-    └── crispy-pizza/           ← Each new brand gets its own folder here (next milestone)
+    └── crispy-pizza/           ← Separate site section, own orange/black identity
         ├── index.html
-        └── crispy-pizza.css
+        └── assets/
+            ├── css/crispy-pizza.css
+            └── js/crispy-pizza.js
 ```
+
+## Shared login (important — read this)
+
+`assets/js/auth.js` gives you a **fake, front-end-only login** so that logging in on
+the Darkness Creations home page also shows you as logged in on Crispy Pizza and the
+Marketplace. It works because all pages share the same origin on GitHub Pages, and it
+stores your name + a coin balance in the browser's `localStorage`.
+
+**This is not real authentication.** There's no password, no server, no database —
+anyone can type any name. It's meant to let you demo the "one account across the
+whole site" experience before you wire up real auth. When you're ready to launch for
+real, swap `auth.js` for a real provider (Supabase Auth, Firebase Auth, Clerk, or your
+own backend) — the rest of the site only calls `DCAuth.getUser()`, `DCAuth.login()`,
+`DCAuth.logout()` and `DCAuth.openModal()`, so the swap is contained to that one file.
+
+## Crispy Pizza
+
+Separate brand section at `brands/crispy-pizza/`, styled independently (orange/black,
+gaming-inspired) from the violet/black Darkness Creations look. It has its own product
+shelf and is not connected to the Darkness Creations marketplace — per your call, each
+has its own store.
 
 ## Adding a new brand/venture
 
