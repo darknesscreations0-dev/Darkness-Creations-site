@@ -19,10 +19,10 @@
   --text-faint:    #6b6b72;
 
   /* --- Accent (Darkness Creations) --- */
-  --accent:        #8B5CF6;
-  --accent-2:      #6366F1;
-  --accent-soft:   rgba(139,92,246,0.14);
-  --accent-glow:   rgba(139,92,246,0.35);
+  --accent:        #9BA1AA;
+  --accent-2:      #6E7480;
+  --accent-soft:   rgba(154,161,170,0.14);
+  --accent-glow:   rgba(154,161,170,0.32);
 
   /* --- Type scale --- */
   --font-display: 'Clash Display', 'Inter', sans-serif;
