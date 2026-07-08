@@ -9,7 +9,7 @@
   width:520px; height:520px;
   border-radius:50%;
   pointer-events:none;
-  background:radial-gradient(circle, var(--accent-glow) 0%, rgba(139,92,246,0) 70%);
+  background:radial-gradient(circle, var(--accent-glow) 0%, rgba(0,0,0,0) 70%);
   transform:translate(-50%,-50%);
   z-index:2;
   mix-blend-mode:screen;
@@ -109,12 +109,12 @@
 .hero__orb--1{
   width:640px; height:640px;
   top:-240px; right:-190px;
-  background:radial-gradient(circle at 38% 62%, var(--accent) 0%, rgba(139,92,246,0) 68%);
+  background:radial-gradient(circle at 38% 62%, var(--accent) 0%, rgba(0,0,0,0) 68%);
 }
 .hero__orb--2{
   width:460px; height:460px;
   bottom:-165px; left:-155px;
-  background:radial-gradient(circle at 60% 35%, var(--accent-2) 0%, rgba(99,102,241,0) 72%);
+  background:radial-gradient(circle at 60% 35%, var(--accent-2) 0%, rgba(0,0,0,0) 72%);
   opacity:.32;
 }
 .hero__grain{
