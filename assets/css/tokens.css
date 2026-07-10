@@ -6,17 +6,17 @@
 
 :root{
   /* --- Core surfaces --- */
-  --bg:            #ffffff;
-  --surface:       #f5f5f7;
-  --surface-2:     #eeeef0;
-  --surface-3:     #e4e4e7;
+  --bg:            #f5f5f7;
+  --surface:       #ffffff;
+  --surface-2:     #ececec;
+  --surface-3:     #e2e2e4;
   --border:        rgba(0,0,0,0.08);
   --border-strong: rgba(0,0,0,0.14);
 
   /* --- Text --- */
   --text:          #1d1d1f;
   --text-dim:      #6e6e73;
-  --text-faint:    #a1a1a6;
+  --text-faint:    #86868b;
 
   /* --- Accent (Darkness Creations) --- */
   --accent:        #3a3a3c;
@@ -25,9 +25,9 @@
   --accent-glow:   rgba(58,58,60,0.16);
 
   /* --- Type scale --- */
-  --font-display: 'Clash Display', 'Inter', sans-serif;
+  --font-display: -apple-system, 'SF Pro Display', 'Inter', system-ui, sans-serif;
   --font-script:  'Instrument Serif', 'Georgia', serif;
-  --font-body:    'Inter', sans-serif;
+  --font-body:    -apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif;
 
   --fs-hero:   clamp(2.75rem, 6.5vw, 6.4rem);
   --fs-h1:     clamp(2.25rem, 4.2vw, 3.6rem);

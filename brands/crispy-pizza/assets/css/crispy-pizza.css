@@ -11,6 +11,11 @@
   --cp-amber:       #FFA500;
   --cp-bg:          #0a0a0a;
   --cp-surface:     #111111;
+  /* Crispy keeps its own font stack, independent of Darkness
+     Creations' shared --font-display (which now points to
+     system fonts for the parent site). */
+  --font-display:   'Clash Display', 'Inter', sans-serif;
+  --font-body:      'Inter', sans-serif;
   --cp-surface-2:   #171310;
   --cp-border:      rgba(255,255,255,0.08);
   --cp-border-glow: rgba(255,122,0,0.35);
