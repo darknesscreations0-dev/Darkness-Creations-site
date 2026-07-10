@@ -6,23 +6,23 @@
 
 :root{
   /* --- Core surfaces --- */
-  --bg:            #050505;
-  --surface:       #0c0c0e;
-  --surface-2:     #131316;
-  --surface-3:     #1b1b1f;
-  --border:        rgba(255,255,255,0.08);
-  --border-strong: rgba(255,255,255,0.16);
+  --bg:            #ffffff;
+  --surface:       #f5f5f7;
+  --surface-2:     #eeeef0;
+  --surface-3:     #e4e4e7;
+  --border:        rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.14);
 
   /* --- Text --- */
-  --text:          #f5f5f7;
-  --text-dim:      #a1a1aa;
-  --text-faint:    #6b6b72;
+  --text:          #1d1d1f;
+  --text-dim:      #6e6e73;
+  --text-faint:    #a1a1a6;
 
   /* --- Accent (Darkness Creations) --- */
-  --accent:        #9BA1AA;
-  --accent-2:      #6E7480;
-  --accent-soft:   rgba(154,161,170,0.14);
-  --accent-glow:   rgba(154,161,170,0.32);
+  --accent:        #3a3a3c;
+  --accent-2:      #6e6e73;
+  --accent-soft:   rgba(58,58,60,0.06);
+  --accent-glow:   rgba(58,58,60,0.16);
 
   /* --- Type scale --- */
   --font-display: 'Clash Display', 'Inter', sans-serif;
@@ -46,26 +46,9 @@
   /* --- Motion --- */
   --ease: cubic-bezier(.16,.8,.24,1);
 
-  /* --- Texture --- */
-  --shadow-soft:  0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px -20px rgba(0,0,0,0.6);
-  --shadow-lift:  0 1px 0 rgba(255,255,255,0.05) inset, 0 30px 60px -24px rgba(0,0,0,0.7);
-}
-
-/* ============================================================
-   GLOBAL GRAIN — breaks up flat gradients/surfaces so they
-   don't read as smooth CSS-generated blur. Fixed, non-interactive,
-   sits above everything at very low opacity.
-   ============================================================ */
-body::after{
-  content:'';
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  pointer-events:none;
-  opacity:.09;
-  mix-blend-mode:screen;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size:180px 180px;
+  /* --- Texture (soft, light-appropriate shadows) --- */
+  --shadow-soft:  0 1px 0 rgba(255,255,255,0.6) inset, 0 12px 28px -18px rgba(0,0,0,0.16);
+  --shadow-lift:  0 1px 0 rgba(255,255,255,0.7) inset, 0 22px 44px -20px rgba(0,0,0,0.2);
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -114,7 +97,7 @@ input:focus-visible{
 
 /* ============================================================
    SHARED AUTH UI (login modal + account slot)
-   Used across every page — home, marketplace, Crispy Pizza.
+   Used across every page — home, marketplace, Crispy.
    ============================================================ */
 [data-dc-account]{
   display:flex;
@@ -126,7 +109,7 @@ input:focus-visible{
   padding:.35rem .7rem;
   border-radius:999px;
   border:1px solid var(--border-strong);
-  background:rgba(255,255,255,0.04);
+  background:rgba(0,0,0,0.03);
 }
 .dc-account-name{ font-size:.88rem; font-weight:500; }
 .dc-account-logout{
@@ -147,17 +130,18 @@ input:focus-visible{
 .dc-auth-modal.is-open{ display:flex; }
 .dc-auth-modal__backdrop{
   position:absolute; inset:0;
-  background:rgba(0,0,0,0.7);
+  background:rgba(0,0,0,0.35);
   backdrop-filter:blur(4px);
 }
 .dc-auth-modal__box{
   position:relative;
   z-index:1;
   width:min(380px, 90vw);
-  background:var(--surface-2);
+  background:#ffffff;
   border:1px solid var(--border-strong);
   border-radius:var(--radius-lg);
   padding:2.2rem;
+  box-shadow:var(--shadow-lift);
 }
 .dc-auth-modal__x{
   position:absolute; top:1rem; right:1rem;
@@ -189,7 +173,7 @@ input:focus-visible{
   padding:.85rem 1.1rem;
   border-radius:10px;
   border:1px solid var(--border-strong);
-  background:rgba(255,255,255,0.03);
+  background:#fafafa;
   color:var(--text);
   font-size:.95rem;
 }

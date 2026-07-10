@@ -28,7 +28,7 @@ darkness-creations/
 ## Shared login (important — read this)
 
 `assets/js/auth.js` gives you a **fake, front-end-only login** so that logging in on
-the Darkness Creations home page also shows you as logged in on Crispy Pizza and the
+the Darkness Creations home page also shows you as logged in on Crispy and the
 Marketplace. It works because all pages share the same origin on GitHub Pages, and it
 stores your name + a coin balance in the browser's `localStorage`.
 
@@ -39,7 +39,7 @@ real, swap `auth.js` for a real provider (Supabase Auth, Firebase Auth, Clerk, o
 own backend) — the rest of the site only calls `DCAuth.getUser()`, `DCAuth.login()`,
 `DCAuth.logout()` and `DCAuth.openModal()`, so the swap is contained to that one file.
 
-## Crispy Pizza
+## Crispy
 
 Separate brand section at `brands/crispy-pizza/`, styled independently (orange/black,
 gaming-inspired) from the violet/black Darkness Creations look. It has its own product
@@ -61,7 +61,7 @@ has its own store.
 ## Admin panel (real backend via Supabase)
 
 `admin.html` is a password-protected dashboard for adding, editing and deleting
-products — for both the Darkness Creations marketplace and the Crispy Pizza store —
+products — for both the Darkness Creations marketplace and the Crispy store —
 including image and video uploads. It's backed by **Supabase** (free tier), a real
 database + file storage service, so products you add show up live for every visitor,
 not just you.
@@ -81,7 +81,7 @@ not just you.
 ### Using it
 
 - Go to `yoursite.com/admin.html`, log in with the account from step 3.
-- Switch between the "Darkness Creations Marketplace" and "Crispy Pizza Store" tabs
+- Switch between the "Darkness Creations Marketplace" and "Crispy Store" tabs
   at the top — products are kept separate per your earlier call.
 - Add a product: name, category, price (or mark it free), description, tags, and
   optionally an image, a preview video, and the actual downloadable file. Hit
@@ -103,4 +103,4 @@ not just you.
 - All animation libraries (GSAP, ScrollTrigger, Lenis) are loaded via CDN — no npm/build step needed.
 - Fonts: Clash Display (display) via Fontshare, Inter (body) via Google Fonts — both CDN-linked.
 - Reduced-motion is respected throughout (`prefers-reduced-motion`).
-- Currently built: **Home page** only. Crispy Pizza page, marketplace, and product page templates are the next milestones per your brief.
+- Currently built: **Home page** only. Crispy page, marketplace, and product page templates are the next milestones per your brief.

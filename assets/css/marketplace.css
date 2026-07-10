@@ -51,7 +51,7 @@
   padding:.9rem 1.3rem;
   border-radius:999px;
   border:1px solid var(--border-strong);
-  background:rgba(255,255,255,0.03);
+  background:rgba(0,0,0,0.02);
   color:var(--text);
   font-size:.95rem;
 }
@@ -78,7 +78,7 @@
 .mkt-chip.is-active,
 .mkt-chip:hover{
   background:var(--text);
-  color:#0a0a0a;
+  color:#ffffff;
   border-color:var(--text);
 }
 

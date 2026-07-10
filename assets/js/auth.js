@@ -4,7 +4,7 @@
    There is no real backend/password check here. This simulates
    a logged-in session using localStorage so that logging in on
    the Darkness Creations home page also shows as "logged in"
-   on Crispy Pizza and the Marketplace, since they share the
+   on Crispy and the Marketplace, since they share the
    same origin on GitHub Pages.
 
    Swap this out for real auth (Supabase, Firebase, Clerk, your
@@ -51,7 +51,7 @@ const DCAuth = (() => {
         <button class="dc-auth-modal__x" data-close aria-label="Close">&times;</button>
         <span class="dc-auth-modal__eyebrow">Darkness Creations</span>
         <h3>Sign in</h3>
-        <p>One account works across the studio site, the marketplace and Crispy Pizza.</p>
+        <p>One account works across the studio site, the marketplace and Crispy.</p>
         <form data-dc-login-form>
           <input type="text" name="name" placeholder="Your name" required autocomplete="name">
           <button type="submit" class="btn btn--primary" style="width:100%; justify-content:center; margin-top:.9rem;">

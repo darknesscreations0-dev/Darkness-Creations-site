@@ -85,6 +85,39 @@
       });
     });
 
+    /* ---------- Staggered card grid entrances ---------- */
+    ScrollTrigger.batch('.stagger-item', {
+      start: 'top 88%',
+      once: true,
+      onEnter: (batch) => {
+        batch.forEach((el, i) => {
+          setTimeout(() => el.classList.add('is-visible'), i * 90);
+        });
+      },
+    });
+
+    /* ---------- Cinematic pinned statement (Apple-style scale-lock) ---------- */
+    const cinematicPin = document.querySelector('.cinematic__pin');
+    const cinematicText = document.querySelector('.cinematic__text');
+    const cinematicBg = document.querySelector('.cinematic__bg');
+    const cinematicSection = document.querySelector('.cinematic');
+
+    if (cinematicPin && cinematicText && cinematicSection) {
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: cinematicSection,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.6,
+        },
+      })
+        .to(cinematicText, { scale: 1, opacity: 1, ease: 'none', duration: 0.35 })
+        .to(cinematicBg, { opacity: 1, ease: 'none', duration: 0.35 }, '<')
+        .to({}, { duration: 0.3 }) // hold at full scale/readable
+        .to(cinematicText, { scale: 1.08, opacity: 0, filter: 'blur(6px)', ease: 'none', duration: 0.35 })
+        .to(cinematicBg, { opacity: 0, ease: 'none', duration: 0.35 }, '<');
+    }
+
     /* ---------- Pipeline horizontal scrub (signature element) ---------- */
     const rail = document.querySelector('.pipeline__rail');
     const trackWrap = document.querySelector('.pipeline__track-wrap');
@@ -109,8 +142,10 @@
       });
     }
   } else {
-    // Fallback: no GSAP — just show all reveal elements
-    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
+    // Fallback: no GSAP — just show all reveal/stagger elements
+    document.querySelectorAll('.reveal, .stagger-item').forEach((el) => el.classList.add('is-visible'));
+    const cinematicText = document.querySelector('.cinematic__text');
+    if (cinematicText) { cinematicText.style.opacity = 1; cinematicText.style.transform = 'scale(1)'; }
   }
 
   /* ---------- Newsletter form (static demo) ---------- */

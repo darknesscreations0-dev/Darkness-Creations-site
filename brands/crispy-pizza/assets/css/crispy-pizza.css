@@ -90,7 +90,7 @@ body.cp-body{
   color:var(--cp-text-dim);
 }
 
-/* Override shared account slot for Crispy Pizza palette */
+/* Override shared account slot for Crispy palette */
 .cp-topbar [data-dc-account] .dc-coin-badge{
   border-color:var(--cp-border-glow);
   background:rgba(255,122,0,0.12);
