@@ -560,6 +560,25 @@
   position:absolute; inset:0;
   background:radial-gradient(circle at 30% 20%, var(--accent-soft), transparent 60%);
 }
+.work-card__play{
+  position:absolute; inset:0;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.work-card__play span{
+  width:44px; height:44px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.92);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.18);
+  transition:transform .3s var(--ease);
+}
+.work-card__play svg{ width:16px; height:16px; margin-left:2px; color:var(--text); }
+.work-card:hover .work-card__play span{ transform:scale(1.08); }
 .work-card__client{ font-size:.8rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:.04em; }
 .work-card h3{
   font-family:var(--font-display);
