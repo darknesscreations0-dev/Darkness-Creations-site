@@ -846,8 +846,14 @@
   object-fit:cover;
   border-radius:inherit;
   z-index:0;
+  pointer-events:none;
 }
 .showcase__visual{ cursor:pointer; }
+.showcase__wave,
+.work-card__play,
+.showcase__scrub{
+  z-index:2;
+}
 .showcase__visual.is-playing .work-card__play{ opacity:0; pointer-events:none; }
 .showcase__visual.is-playing .showcase__wave,
 .showcase__visual.is-playing .showcase__scrub{ opacity:1; }

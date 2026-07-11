@@ -96,8 +96,7 @@
     var track = box.querySelector('.showcase__scrub-track');
     if (!video || !playBtn) return;
 
-    playBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
+    function togglePlay() {
       if (video.paused) {
         video.play().then(function () {
           box.classList.add('is-playing');
@@ -108,7 +107,9 @@
         video.pause();
         box.classList.remove('is-playing');
       }
-    });
+    }
+
+    box.addEventListener('click', togglePlay);
 
     /* Once real video metadata is available, switch the scrubber from
        decorative CSS animation to the video's actual duration/position. */
@@ -134,6 +135,7 @@
     /* Let people scrub by clicking/dragging the track once real time is active. */
     if (track) {
       track.addEventListener('click', function (e) {
+        e.stopPropagation();
         if (!video.duration || !isFinite(video.duration)) return;
         var rect = track.getBoundingClientRect();
         var ratio = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
