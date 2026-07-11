@@ -20,21 +20,23 @@
 
 <!-- ============ NAV ============ -->
 <header class="nav">
-  <a href="index.html" class="nav__mark" aria-label="Darkness Creations home">
-    <img src="assets/img/logo.jpg" alt="" class="nav__mark-glyph" aria-hidden="true">
-    Darkness Creations
-  </a>
-  <nav class="nav__links" aria-label="Primary">
-    <a href="#work">Work</a>
-    <a href="#about">Studio</a>
-    <a href="#pipeline">Process</a>
-    <a href="marketplace.html">Marketplace</a>
-    <a href="#ventures">Ventures</a>
-    <a href="#testimonials">Clients</a>
-  </nav>
-  <div style="display:flex; align-items:center; gap:1rem;">
-    <span data-dc-account></span>
-    <a href="#newsletter" class="nav__cta">Start a project</a>
+  <div class="nav__inner">
+    <a href="index.html" class="nav__mark" aria-label="Darkness Creations home">
+      <img src="assets/img/logo.jpg" alt="" class="nav__mark-glyph" aria-hidden="true">
+      Darkness Creations
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#about">Studio</a>
+      <a href="#pipeline">Process</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="#ventures">Ventures</a>
+      <a href="#testimonials">Clients</a>
+    </nav>
+    <div class="nav__right">
+      <span data-dc-account></span>
+      <a href="#newsletter" class="nav__cta">Start a project</a>
+    </div>
   </div>
 </header>
 
@@ -56,7 +58,13 @@
       </div>
 
       <div class="showcase__visual hero__visual">
+        <div class="showcase__wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
         <div class="work-card__play"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+        <div class="showcase__scrub" aria-hidden="true">
+          <span class="showcase__scrub-time">00:04</span>
+          <div class="showcase__scrub-track"><div class="showcase__scrub-fill"></div></div>
+          <span class="showcase__scrub-time">00:35</span>
+        </div>
       </div>
 
       <div class="hero__stats hero__stats--centered">
@@ -77,7 +85,13 @@
       <a href="#" class="btn btn--ghost"><span>View all work</span></a>
     </div>
     <div class="showcase__visual">
+      <div class="showcase__wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
       <div class="work-card__play"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+      <div class="showcase__scrub" aria-hidden="true">
+        <span class="showcase__scrub-time">00:07</span>
+        <div class="showcase__scrub-track"><div class="showcase__scrub-fill"></div></div>
+        <span class="showcase__scrub-time">01:12</span>
+      </div>
     </div>
   </section>
 
