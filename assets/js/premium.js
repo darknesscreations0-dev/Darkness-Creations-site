@@ -78,11 +78,24 @@
     });
   }
 
-  /* ---------- 4. Showcase video play/pause ---------- */
+  /* ---------- 4. Showcase video play/pause + real scrubber sync ---------- */
+  function formatTime(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    var m = Math.floor(sec / 60);
+    var s = Math.floor(sec % 60);
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
   document.querySelectorAll('.showcase__visual').forEach(function (box) {
     var video = box.querySelector('.showcase__media');
     var playBtn = box.querySelector('.work-card__play');
+    var fill = box.querySelector('.showcase__scrub-fill');
+    var times = box.querySelectorAll('.showcase__scrub-time');
+    var currentLabel = times[0];
+    var durationLabel = times[1];
+    var track = box.querySelector('.showcase__scrub-track');
     if (!video || !playBtn) return;
+
     playBtn.addEventListener('click', function (e) {
       e.stopPropagation();
       if (video.paused) {
@@ -96,5 +109,36 @@
         box.classList.remove('is-playing');
       }
     });
+
+    /* Once real video metadata is available, switch the scrubber from
+       decorative CSS animation to the video's actual duration/position. */
+    video.addEventListener('loadedmetadata', function () {
+      if (!isFinite(video.duration)) return;
+      box.classList.add('has-real-time');
+      if (durationLabel) durationLabel.textContent = formatTime(video.duration);
+      if (currentLabel) currentLabel.textContent = formatTime(video.currentTime);
+      if (fill) fill.style.width = '0%';
+    });
+
+    video.addEventListener('timeupdate', function () {
+      if (!video.duration || !isFinite(video.duration)) return;
+      var pct = (video.currentTime / video.duration) * 100;
+      if (fill) fill.style.width = pct + '%';
+      if (currentLabel) currentLabel.textContent = formatTime(video.currentTime);
+    });
+
+    video.addEventListener('ended', function () {
+      box.classList.remove('is-playing');
+    });
+
+    /* Let people scrub by clicking/dragging the track once real time is active. */
+    if (track) {
+      track.addEventListener('click', function (e) {
+        if (!video.duration || !isFinite(video.duration)) return;
+        var rect = track.getBoundingClientRect();
+        var ratio = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+        video.currentTime = ratio * video.duration;
+      });
+    }
   });
 })();
