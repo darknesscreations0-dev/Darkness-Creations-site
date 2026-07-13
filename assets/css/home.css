@@ -896,6 +896,17 @@
 .marquee__card,
 .card-stack__item{ perspective:700px; }
 
+.card-video{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  z-index:1;
+  opacity:0;
+  transition:opacity .35s var(--ease);
+  pointer-events:none;
+}
+.is-previewing .card-video{ opacity:1; }
+
 /* ---------- Waveform + scrubber (subtle "actively editing" motion) ---------- */
 .showcase__wave{
   position:absolute; left:1.5rem; top:1.5rem; z-index:2;

@@ -56,7 +56,7 @@
     el.style.setProperty('--card-photo', 'url("' + el.dataset.bg + '")');
   });
 
-  /* ---------- 3. 3D tilt-on-hover for preview cards ---------- */
+  /* ---------- 3. 3D tilt-on-hover + hover video preview for cards ---------- */
   if (canHover && !reduceMotion) {
     document.querySelectorAll('.marquee__card, .card-stack__item').forEach(function (card) {
       var inner = document.createElement('div');
@@ -75,6 +75,33 @@
       card.addEventListener('pointerleave', function () {
         inner.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
       });
+
+      /* Hover video preview — only builds the <video> once a real file exists;
+         a missing file just fails silently and the static photo/gradient stays. */
+      var videoSrc = card.dataset.video;
+      if (videoSrc) {
+        var preview = document.createElement('video');
+        preview.className = 'card-video';
+        preview.src = videoSrc;
+        preview.muted = true;
+        preview.loop = true;
+        preview.playsInline = true;
+        preview.preload = 'none';
+        card.insertBefore(preview, inner);
+
+        card.addEventListener('pointerenter', function () {
+          preview.currentTime = 0;
+          preview.play().then(function () {
+            card.classList.add('is-previewing');
+          }).catch(function () {
+            /* no video for this card yet — silently stay on the static photo */
+          });
+        });
+        card.addEventListener('pointerleave', function () {
+          preview.pause();
+          card.classList.remove('is-previewing');
+        });
+      }
     });
   }
 
