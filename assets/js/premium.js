@@ -98,18 +98,20 @@
 
     function togglePlay() {
       if (video.paused) {
-        video.play().then(function () {
-          box.classList.add('is-playing');
-        }).catch(function () {
+        video.play().catch(function () {
           /* no source uploaded yet — ignore */
         });
       } else {
         video.pause();
-        box.classList.remove('is-playing');
       }
     }
 
     box.addEventListener('click', togglePlay);
+
+    /* Keep UI state (play button, waveform, scrubber) in sync with the
+       video's real playback state — covers autoplay as well as manual clicks. */
+    video.addEventListener('play', function () { box.classList.add('is-playing'); });
+    video.addEventListener('pause', function () { box.classList.remove('is-playing'); });
 
     /* Once real video metadata is available, switch the scrubber from
        decorative CSS animation to the video's actual duration/position. */

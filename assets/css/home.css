@@ -821,6 +821,8 @@
 }
 .showcase__visual{
   position:relative;
+  isolation:isolate;
+  z-index:3;
   margin:3rem auto 0;
   max-width:920px;
   border-radius:var(--radius-lg);
