@@ -145,4 +145,17 @@
       });
     }
   });
+  /* ---------- 5. Compact nav on scroll (safe no-op if main.js already does this) ---------- */
+  var navEl = document.querySelector('.nav');
+  if (navEl) {
+    var setNavState = function () {
+      if (window.scrollY > 24) {
+        navEl.classList.add('is-scrolled');
+      } else {
+        navEl.classList.remove('is-scrolled');
+      }
+    };
+    setNavState();
+    window.addEventListener('scroll', setNavState, { passive: true });
+  }
 })();

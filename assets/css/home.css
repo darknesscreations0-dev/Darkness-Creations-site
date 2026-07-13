@@ -30,9 +30,13 @@
   backdrop-filter:blur(18px) saturate(140%);
   -webkit-backdrop-filter:blur(18px) saturate(140%);
   border-bottom:1px solid transparent;
-  transition:border-color .4s var(--ease), background .4s var(--ease);
+  transition:border-color .4s var(--ease), background .4s var(--ease), padding .35s var(--ease);
 }
-.nav.is-scrolled{ border-bottom-color:var(--border); }
+.nav.is-scrolled{
+  border-bottom-color:var(--border);
+  padding-top:.68rem;
+  padding-bottom:.68rem;
+}
 .nav__inner{
   max-width:1280px;
   margin-inline:auto;
@@ -50,14 +54,18 @@
   font-family:var(--font-display);
   font-size:1.05rem;
   letter-spacing:.01em;
+  transition:font-size .35s var(--ease);
 }
+.nav.is-scrolled .nav__mark{ font-size:.92rem; }
 .nav__mark-glyph{
   width:30px; height:30px;
   border-radius:50%;
   object-fit:cover;
   flex-shrink:0;
   display:block;
+  transition:width .35s var(--ease), height .35s var(--ease);
 }
+.nav.is-scrolled .nav__mark-glyph{ width:24px; height:24px; }
 
 .nav__links{
   display:flex;
@@ -850,7 +858,6 @@
   z-index:0;
   pointer-events:none;
 }
-.showcase__visual{ cursor:pointer; }
 .showcase__wave,
 .work-card__play,
 .showcase__scrub{
