@@ -10,9 +10,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="assets/css/tokens.css">
-<link rel="stylesheet" href="assets/css/home.css">
-<link rel="stylesheet" href="assets/css/marketplace.css">
+<link rel="stylesheet" href="assets/css/tokens.css?v=1">
+<link rel="stylesheet" href="assets/css/home.css?v=1">
+<link rel="stylesheet" href="assets/css/marketplace.css?v=1">
 </head>
 <body>
 
@@ -21,7 +21,7 @@
 <!-- ============ NAV ============ -->
 <header class="nav">
   <a href="index.html" class="nav__mark" aria-label="Darkness Creations home">
-    <img src="assets/img/logo.jpg" alt="" class="nav__mark-glyph" aria-hidden="true">
+    <img src="assets/img/logo.png" alt="" class="nav__mark-glyph" aria-hidden="true">
     Darkness Creations
   </a>
   <nav class="nav__links" aria-label="Primary">
@@ -51,6 +51,29 @@
       <form class="mkt-search" role="search" onsubmit="return false;">
         <input type="search" placeholder="Search project files, presets, plugins…" aria-label="Search marketplace">
       </form>
+
+      <div class="card-stack" aria-hidden="true">
+        <div class="card-stack__item card-stack__item--1" data-bg="assets/img/work/luts.jpg">
+          <span class="card-stack__tag">LUTs</span>
+          <div class="card-stack__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18"/></svg></div>
+        </div>
+        <div class="card-stack__item card-stack__item--2" data-bg="assets/img/work/project-files.jpg">
+          <span class="card-stack__tag">Project files</span>
+          <div class="card-stack__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h5l2 2h9v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/></svg></div>
+        </div>
+        <div class="card-stack__item card-stack__item--3" data-bg="assets/img/work/plugins.jpg">
+          <span class="card-stack__tag">Plugins</span>
+          <div class="card-stack__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/><rect x="6" y="6" width="12" height="12" rx="2"/></svg></div>
+        </div>
+        <div class="card-stack__item card-stack__item--4" data-bg="assets/img/work/sfx-packs.jpg">
+          <span class="card-stack__tag">SFX packs</span>
+          <div class="card-stack__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10v4h4l5 4V6l-5 4H4Z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg></div>
+        </div>
+        <div class="card-stack__item card-stack__item--5" data-bg="assets/img/work/presets.jpg">
+          <span class="card-stack__tag">Presets</span>
+          <div class="card-stack__glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h10M4 18h13"/><circle cx="18" cy="6" r="1.6"/><circle cx="16" cy="12" r="1.6"/><circle cx="19" cy="18" r="1.6"/></svg></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -290,7 +313,7 @@
     <div class="footer__grid">
       <div class="footer__brand">
         <a href="index.html" class="nav__mark">
-          <img src="assets/img/logo.jpg" alt="" class="nav__mark-glyph" aria-hidden="true">
+          <img src="assets/img/logo.png" alt="" class="nav__mark-glyph" aria-hidden="true">
           Darkness Creations
         </a>
         <p>A content studio and venture group — directing, producing and distributing content for brands, and selling the assets we build it with.</p>
@@ -329,8 +352,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-config.js"></script>
 <script>window.supabaseClient = supabaseClient;</script>
-<script src="assets/js/auth.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/marketplace.js"></script>
+<script src="assets/js/auth.js?v=1"></script>
+<script src="assets/js/main.js?v=1"></script>
+<script src="assets/js/premium.js?v=1"></script>
+<script src="assets/js/marketplace.js?v=1"></script>
 </body>
 </html>
