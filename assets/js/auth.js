@@ -3,7 +3,7 @@
    ------------------------------------------------------------
    There is no real backend/password check here. This simulates
    a logged-in session using localStorage so that logging in on
-   the Darkness Creations home page also shows as "logged in"
+   the Darkness home page also shows as "logged in"
    on Crispy and the Marketplace, since they share the
    same origin on GitHub Pages.
 
@@ -49,7 +49,7 @@ const DCAuth = (() => {
       <div class="dc-auth-modal__backdrop" data-close></div>
       <div class="dc-auth-modal__box">
         <button class="dc-auth-modal__x" data-close aria-label="Close">&times;</button>
-        <span class="dc-auth-modal__eyebrow">Darkness Creations</span>
+        <span class="dc-auth-modal__eyebrow">Darkness</span>
         <h3>Sign in</h3>
         <p>One account works across the studio site, the marketplace and Crispy.</p>
         <form data-dc-login-form>
