@@ -97,9 +97,9 @@
           </div>
 
           <div class="admin-field">
-            <label for="p-image">Cover image</label>
-            <input id="p-image" type="file" accept="image/*">
-            <p class="admin-file-hint">Shown on the product card. Required for new products.</p>
+            <label for="p-image">Cover (image or short video)</label>
+            <input id="p-image" type="file" accept="image/*,video/*">
+            <p class="admin-file-hint">Shown as the thumbnail on the marketplace grid. Video covers autoplay muted &amp; loop. Required for new products.</p>
           </div>
 
           <div class="admin-field">
@@ -233,6 +233,7 @@
     </div>
   </main>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-config.js"></script>

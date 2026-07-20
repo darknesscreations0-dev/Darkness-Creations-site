@@ -166,8 +166,8 @@
 
 /* ============================================================
    WORK SECTION — video previews + lightbox player
-   Wires up the marquee__card data-video attributes (previously
-   unused), plus the "Watch showreel" and "View all work" buttons.
+   Wires up the marquee__card data-video attributes, plus the
+   "Watch showreel" and "View all work" buttons.
    ============================================================ */
 (function () {
   const cards = Array.from(document.querySelectorAll('.marquee__card'));
@@ -183,34 +183,21 @@
   const showreelBtn = document.getElementById('watchShowreelBtn');
   const viewAllBtn = document.getElementById('viewAllWorkBtn');
 
-  /* ---------- 1. Hover-preview video on each marquee card ---------- */
-  /* If a video file is missing/unreachable, we quietly fall back to
-     the icon glyph that was already there — nothing breaks. */
   cards.forEach((card) => {
     const video = card.querySelector('.marquee__video');
     if (!video || !video.getAttribute('src')) return;
-
     video.addEventListener('loadeddata', () => video.classList.add('is-ready'));
     video.addEventListener('error', () => video.remove());
-
-    card.addEventListener('mouseenter', () => {
-      if (video.isConnected) video.play().catch(() => {});
-    });
-    card.addEventListener('mouseleave', () => {
-      if (video.isConnected) { video.pause(); video.currentTime = 0; }
-    });
+    card.addEventListener('mouseenter', () => { if (video.isConnected) video.play().catch(() => {}); });
+    card.addEventListener('mouseleave', () => { if (video.isConnected) { video.pause(); video.currentTime = 0; } });
   });
 
-  /* ---------- 2. Build a de-duplicated playlist from real cards ---------- */
   const seen = new Set();
   const playlist = [];
   cards.forEach((card) => {
     const src = card.dataset.video;
     const label = card.querySelector('.marquee__tag')?.textContent || '';
-    if (src && !seen.has(src)) {
-      seen.add(src);
-      playlist.push({ src, label });
-    }
+    if (src && !seen.has(src)) { seen.add(src); playlist.push({ src, label }); }
   });
 
   let playlistIndex = 0;
@@ -224,7 +211,6 @@
     document.body.style.overflow = 'hidden';
     lbVideo.play().catch(() => {});
   }
-
   function closeLightbox() {
     lightbox.classList.remove('is-open');
     lightbox.setAttribute('aria-hidden', 'true');
@@ -233,7 +219,6 @@
     lbVideo.removeAttribute('src');
     lbVideo.load();
   }
-
   function showPlaylistItem(index) {
     if (!playlist.length) return;
     playlistIndex = (index + playlist.length) % playlist.length;
@@ -241,7 +226,6 @@
     openLightbox(item.src, item.label);
   }
 
-  /* ---------- 3. Click a card -> open that video in the lightbox ---------- */
   cards.forEach((card) => {
     card.addEventListener('click', () => {
       const src = card.dataset.video;
@@ -251,17 +235,8 @@
     });
   });
 
-  /* ---------- 4. "Watch showreel" -> plays the hero showreel ---------- */
-  if (showreelBtn) {
-    showreelBtn.addEventListener('click', () => {
-      openLightbox('assets/video/showreel.mp4?v=5', 'Showreel');
-    });
-  }
-
-  /* ---------- 5. "View all work" -> opens the playlist from the start ---------- */
-  if (viewAllBtn) {
-    viewAllBtn.addEventListener('click', () => showPlaylistItem(0));
-  }
+  if (showreelBtn) showreelBtn.addEventListener('click', () => openLightbox('assets/video/showreel.mp4?v=5', 'Showreel'));
+  if (viewAllBtn) viewAllBtn.addEventListener('click', () => showPlaylistItem(0));
 
   lbPrev.addEventListener('click', () => showPlaylistItem(playlistIndex - 1));
   lbNext.addEventListener('click', () => showPlaylistItem(playlistIndex + 1));
