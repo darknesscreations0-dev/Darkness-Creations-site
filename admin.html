@@ -41,45 +41,26 @@
 
   <main class="admin-main">
     <div class="admin-tabs">
-      <button class="admin-tab is-active" data-brand="darkness-creations">Darkness Marketplace</button>
-      <button class="admin-tab" data-brand="crispy-pizza">Crispy Store</button>
+      <button class="admin-tab is-active" data-section="products">Products</button>
+      <button class="admin-tab" data-section="promo">Promo codes</button>
+      <button class="admin-tab" data-section="banners">Banners</button>
     </div>
 
-    <div class="admin-grid">
+    <!-- ============ PRODUCTS SECTION ============ -->
+    <div class="admin-grid" data-section-panel="products">
       <!-- ---------- Form ---------- -->
       <div class="admin-panel">
         <h2>Add / edit product</h2>
         <form data-product-form>
           <div class="admin-field">
-            <label for="p-name">Product name</label>
-            <input id="p-name" name="name" type="text" required>
+            <label for="p-title">Title</label>
+            <input id="p-title" name="title" type="text" required>
           </div>
 
           <div class="admin-field--row">
             <div class="admin-field">
               <label for="p-category">Category</label>
-              <input id="p-category" name="category" type="text" placeholder="e.g. templates, plugins" required>
-            </div>
-            <div class="admin-field">
-              <label for="p-price">Price ($)</label>
-              <input id="p-price" name="price" type="number" step="0.01" min="0">
-            </div>
-          </div>
-
-          <label class="admin-check">
-            <input type="checkbox" name="is_free" id="p-free">
-            This product is free
-          </label>
-
-          <div class="admin-field">
-            <label for="p-desc">Description</label>
-            <textarea id="p-desc" name="description" placeholder="Short description shown on the product card"></textarea>
-          </div>
-
-          <div class="admin-field--row">
-            <div class="admin-field">
-              <label for="p-badge">Badge (optional)</label>
-              <input id="p-badge" name="badge" type="text" placeholder="e.g. Bestseller, New">
+              <input id="p-category" name="category" type="text" placeholder="e.g. presets, courses, plugins, bundles" required>
             </div>
             <div class="admin-field">
               <label for="p-tags">Tags (comma separated)</label>
@@ -87,26 +68,55 @@
             </div>
           </div>
 
+          <div class="admin-field--row">
+            <div class="admin-field">
+              <label for="p-price">Price</label>
+              <input id="p-price" name="price" type="number" step="0.01" min="0" value="0" required>
+            </div>
+            <div class="admin-field">
+              <label for="p-sale-price">Sale price (optional)</label>
+              <input id="p-sale-price" name="sale_price" type="number" step="0.01" min="0" placeholder="Leave blank = no sale">
+            </div>
+          </div>
+          <p class="admin-file-hint" style="margin-top:-.6rem;">Set price to 0 for a free product. Fill in a sale price any time to show a discount — remove it to end the sale.</p>
+
           <div class="admin-field">
-            <label for="p-image">Product image / thumbnail</label>
+            <label for="p-desc">Description</label>
+            <textarea id="p-desc" name="description" placeholder="Shown on the product page"></textarea>
+          </div>
+
+          <div class="admin-field--row">
+            <label class="admin-check">
+              <input type="checkbox" name="is_active" id="p-active" checked>
+              Published (visible to customers)
+            </label>
+            <label class="admin-check">
+              <input type="checkbox" name="is_featured" id="p-featured">
+              Featured
+            </label>
+          </div>
+
+          <div class="admin-field">
+            <label for="p-image">Cover image</label>
             <input id="p-image" type="file" accept="image/*">
-            <p class="admin-file-hint">Shown on the product card.</p>
+            <p class="admin-file-hint">Shown on the product card. Required for new products.</p>
           </div>
 
           <div class="admin-field">
-            <label for="p-video">Preview / demo video (optional)</label>
-            <input id="p-video" type="file" accept="video/*">
-            <p class="admin-file-hint">For a before/after or showcase clip, like EarnEdits' preview player.</p>
+            <label for="p-preview">Preview media (optional, multiple allowed)</label>
+            <input id="p-preview" type="file" accept="image/*,video/*" multiple>
+            <p class="admin-file-hint">Extra images/clips shown on the product's detail view.</p>
           </div>
 
           <div class="admin-field">
-            <label for="p-file">Downloadable product file (optional)</label>
-            <input id="p-file" type="file">
-            <p class="admin-file-hint">The actual .aep / .prproj / .zip customers receive after buying.</p>
+            <label for="p-files">Downloadable file(s) (multiple allowed)</label>
+            <input id="p-files" type="file" multiple>
+            <p class="admin-file-hint">What the customer actually receives after purchase — kept private until bought.</p>
           </div>
 
           <div class="admin-submit-row">
             <button type="submit" class="btn btn--primary"><span data-submit-label>Add product</span></button>
+            <button type="button" class="btn btn--ghost" data-cancel-edit style="display:none;"><span>Cancel edit</span></button>
           </div>
           <p class="admin-msg" data-form-msg></p>
         </form>
@@ -116,6 +126,107 @@
       <div class="admin-panel">
         <h2>Existing products</h2>
         <div class="admin-list" data-product-list>
+          <p class="admin-empty">Loading…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PROMO CODES SECTION ============ -->
+    <div class="admin-grid" data-section-panel="promo" style="display:none;">
+      <div class="admin-panel">
+        <h2>Create promo code</h2>
+        <form data-promo-form>
+          <div class="admin-field">
+            <label for="pc-code">Code</label>
+            <input id="pc-code" name="code" type="text" placeholder="e.g. LAUNCH20" required style="text-transform:uppercase;">
+          </div>
+
+          <div class="admin-field--row">
+            <div class="admin-field">
+              <label for="pc-type">Discount type</label>
+              <select id="pc-type" name="discount_type">
+                <option value="percent">Percent off (%)</option>
+                <option value="flat">Flat amount off ($)</option>
+              </select>
+            </div>
+            <div class="admin-field">
+              <label for="pc-value">Discount value</label>
+              <input id="pc-value" name="discount_value" type="number" step="0.01" min="0" required>
+            </div>
+          </div>
+
+          <div class="admin-field--row">
+            <div class="admin-field">
+              <label for="pc-max-uses">Max uses (optional)</label>
+              <input id="pc-max-uses" name="max_uses" type="number" step="1" min="1" placeholder="Unlimited if blank">
+            </div>
+            <div class="admin-field">
+              <label for="pc-expires">Expires (optional)</label>
+              <input id="pc-expires" name="expires_at" type="datetime-local">
+            </div>
+          </div>
+
+          <label class="admin-check">
+            <input type="checkbox" name="is_active" id="pc-active" checked>
+            Active
+          </label>
+
+          <div class="admin-submit-row">
+            <button type="submit" class="btn btn--primary"><span>Create code</span></button>
+          </div>
+          <p class="admin-msg" data-promo-msg></p>
+        </form>
+      </div>
+
+      <div class="admin-panel">
+        <h2>Existing codes</h2>
+        <div class="admin-list" data-promo-list>
+          <p class="admin-empty">Loading…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ BANNERS SECTION ============ -->
+    <div class="admin-grid" data-section-panel="banners" style="display:none;">
+      <div class="admin-panel">
+        <h2>Add banner</h2>
+        <form data-banner-form>
+          <div class="admin-field">
+            <label for="b-title">Headline</label>
+            <input id="b-title" name="title" type="text" required>
+          </div>
+          <div class="admin-field">
+            <label for="b-subtitle">Subtitle (optional)</label>
+            <input id="b-subtitle" name="subtitle" type="text">
+          </div>
+          <div class="admin-field">
+            <label for="b-link">Links to (URL)</label>
+            <input id="b-link" name="link_url" type="text" placeholder="marketplace.html?product=...">
+          </div>
+          <div class="admin-field--row">
+            <div class="admin-field">
+              <label for="b-order">Sort order</label>
+              <input id="b-order" name="sort_order" type="number" step="1" value="0">
+            </div>
+            <label class="admin-check" style="align-self:center;">
+              <input type="checkbox" name="is_active" id="b-active" checked>
+              Active
+            </label>
+          </div>
+          <div class="admin-field">
+            <label for="b-image">Banner image</label>
+            <input id="b-image" type="file" accept="image/*" required>
+          </div>
+          <div class="admin-submit-row">
+            <button type="submit" class="btn btn--primary"><span>Add banner</span></button>
+          </div>
+          <p class="admin-msg" data-banner-msg></p>
+        </form>
+      </div>
+
+      <div class="admin-panel">
+        <h2>Existing banners</h2>
+        <div class="admin-list" data-banner-list>
           <p class="admin-empty">Loading…</p>
         </div>
       </div>

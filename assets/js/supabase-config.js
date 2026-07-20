@@ -13,8 +13,8 @@
    not from hiding this key.
    ============================================================ */
 
-const SUPABASE_URL = 'https://qexhhdmjabjgfauvcjbt.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_s7ppaHxl4hXq37dj0ZTGoA_SNWRsxni';
+const SUPABASE_URL = 'https://sqayzhsybgfgyrnpwxyn.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_t-_OryiioljtSOGH985nAw_z8MJ2wk4';
 
 const supabaseClient = (window.supabase && SUPABASE_URL.startsWith('http'))
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
