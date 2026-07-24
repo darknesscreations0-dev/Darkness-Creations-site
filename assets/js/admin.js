@@ -108,6 +108,45 @@
     return { url: data.publicUrl, name: file.name };
   }
 
+  /* ---------- Large downloadable files → Backblaze B2 ----------
+     Supabase's free plan caps uploads at 50MB, which most real
+     product files (project files, courses, etc.) exceed. These go
+     through our own Vercel function instead, which hands back a
+     secure, one-time link straight to Backblaze — the file itself
+     goes browser → Backblaze directly, never through Supabase. */
+  const UPLOAD_URL_ENDPOINT = 'https://darkness-creations-site.vercel.app/api/get-upload-url';
+
+  async function uploadLargeFileToB2(file) {
+    const { data: sessionData } = await window.supabaseClient.auth.getSession();
+    const accessToken = sessionData && sessionData.session && sessionData.session.access_token;
+    if (!accessToken) throw new Error('Your session expired — please log out and log back in.');
+
+    const urlRes = await fetch(UPLOAD_URL_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accessToken, fileName: file.name }),
+    });
+    const urlData = await urlRes.json();
+    if (!urlRes.ok) throw new Error(urlData.error || 'Could not get an upload link.');
+
+    const uploadRes = await fetch(urlData.uploadUrl, {
+      method: 'POST',
+      headers: {
+        Authorization: urlData.uploadAuthToken,
+        'X-Bz-File-Name': encodeURIComponent(urlData.fileName),
+        'Content-Type': file.type || 'b2/x-auto',
+        'X-Bz-Content-Sha1': 'do_not_verify',
+      },
+      body: file,
+    });
+    if (!uploadRes.ok) {
+      const errText = await uploadRes.text();
+      throw new Error('Upload to storage failed: ' + errText);
+    }
+
+    return { path: urlData.fileName, name: file.name, provider: 'backblaze', bucket: urlData.bucketName };
+  }
+
   /* ============================================================
      PRODUCTS
      ============================================================ */
@@ -168,7 +207,7 @@
         }
 
         if (downloadFiles.length) {
-          const uploaded = await Promise.all(downloadFiles.map((f) => uploadToBucket(f, 'product-files', 'files')));
+          const uploaded = await Promise.all(downloadFiles.map((f) => uploadLargeFileToB2(f)));
           payload.files = uploaded;
         }
 
