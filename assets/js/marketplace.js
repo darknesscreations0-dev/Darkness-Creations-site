@@ -1,23 +1,12 @@
 /* ============================================================
    MARKETPLACE — pulls live products from Supabase and renders
-   the grid + a click-through product detail lightbox.
+   the grid. Clicking a product goes to product.html?id=... —
+   a real dedicated page rather than a modal.
    ============================================================ */
 (function () {
   const grid = document.querySelector('[data-mkt-grid]');
   const countEl = document.querySelector('[data-mkt-count]');
   if (!grid) return;
-
-  const lightbox = document.getElementById('mktLightbox');
-  const lbMedia = document.getElementById('mktLightboxMedia');
-  const lbCat = document.getElementById('mktLightboxCat');
-  const lbTitle = document.getElementById('mktLightboxTitle');
-  const lbDesc = document.getElementById('mktLightboxDesc');
-  const lbTags = document.getElementById('mktLightboxTags');
-  const lbPrice = document.getElementById('mktLightboxPrice');
-  const lbBuy = document.getElementById('mktLightboxBuy');
-  const lbMsg = document.getElementById('mktLightboxMsg');
-  const lbClose = document.getElementById('mktLightboxClose');
-  const lbBackdrop = document.getElementById('mktLightboxBackdrop');
 
   function priceHtml(product) {
     if (product.sale_price != null && product.sale_price !== '') {
@@ -48,73 +37,29 @@
     grid.innerHTML = '';
     products.forEach((product) => {
       const tagsHtml = (product.tags || []).map((t) => `<span class="product-card__tag">${t}</span>`).join('');
+      const href = `product.html?id=${encodeURIComponent(product.id)}`;
       const card = document.createElement('article');
       card.className = 'product-card';
       card.dataset.category = product.category || '';
       card.dataset.name = product.title || '';
       card.innerHTML = `
-        <div class="product-card__media">
-          ${product.is_featured ? '<span class="product-card__badge">Featured</span>' : ''}
-          ${coverHtml(product)}
-          <div class="product-card__preview">Quick preview</div>
-        </div>
-        <div class="product-card__body">
-          <span class="product-card__cat">${product.category || ''}</span>
-          <h3>${product.title}</h3>
-          <div class="product-card__tags">${tagsHtml}</div>
-          <div class="product-card__price-row">${priceHtml(product)}</div>
-          <div class="product-card__actions">
-            <a href="javascript:void(0)" class="btn btn--buy" style="width:100%;" data-open-product><span>View</span></a>
+        <a href="${href}" style="display:block; color:inherit; text-decoration:none;">
+          <div class="product-card__media">
+            ${product.is_featured ? '<span class="product-card__badge">Featured</span>' : ''}
+            ${coverHtml(product)}
+            <div class="product-card__preview">View product</div>
           </div>
-        </div>
+          <div class="product-card__body">
+            <span class="product-card__cat">${product.category || ''}</span>
+            <h3>${product.title}</h3>
+            <div class="product-card__tags">${tagsHtml}</div>
+            <div class="product-card__price-row">${priceHtml(product)}</div>
+          </div>
+        </a>
       `;
-      card.querySelector('[data-open-product]').addEventListener('click', () => openProduct(product));
-      card.querySelector('.product-card__media').addEventListener('click', () => openProduct(product));
       grid.appendChild(card);
     });
   }
-
-  function openProduct(product) {
-    lbCat.textContent = product.category || '';
-    lbTitle.textContent = product.title || '';
-    lbDesc.textContent = product.description || '';
-    lbTags.innerHTML = (product.tags || []).map((t) => `<span class="product-card__tag">${t}</span>`).join('');
-    lbPrice.innerHTML = priceHtml(product);
-    lbMsg.textContent = '';
-
-    let mediaHtml = coverHtml(product);
-    if (product.preview_media && product.preview_media.length) {
-      mediaHtml += product.preview_media.map((m) => {
-        const url = m.url || '';
-        const isVideo = /\.(mp4|webm|mov)(\?|$)/i.test(url);
-        return isVideo
-          ? `<video src="${url}" controls playsinline style="width:100%;border-radius:8px;margin-top:.5rem;"></video>`
-          : `<img src="${url}" alt="" style="width:100%;border-radius:8px;margin-top:.5rem;">`;
-      }).join('');
-    }
-    lbMedia.innerHTML = mediaHtml;
-
-    lbBuy.onclick = () => {
-      lbMsg.textContent = 'Checkout isn\'t set up yet — coming soon.';
-    };
-
-    lightbox.classList.add('is-open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeLightbox() {
-    lightbox.classList.remove('is-open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    lbMedia.innerHTML = '';
-  }
-
-  if (lbClose) lbClose.addEventListener('click', closeLightbox);
-  if (lbBackdrop) lbBackdrop.addEventListener('click', closeLightbox);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
-  });
 
   async function loadProducts() {
     if (!window.supabaseClient) {

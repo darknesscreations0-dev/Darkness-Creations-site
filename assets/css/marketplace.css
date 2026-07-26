@@ -167,7 +167,9 @@ body{
 
 .product-card__media{
   position:relative;
-  height:170px;
+  aspect-ratio: 16 / 10;
+  height:auto;
+  overflow:hidden;
   background:linear-gradient(135deg, var(--surface-3), var(--surface-2));
 }
 .product-card__media::after{
