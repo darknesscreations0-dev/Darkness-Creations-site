@@ -93,23 +93,49 @@
 <a class="btn btn--ghost" href="#work"><span>View all work</span></a>
 </div>
 <div class="work-grid">
-<div class="work-card"><video autoplay muted loop playsinline preload="auto"><source src="assets/video/Work/brand-films.mp4" type="video/mp4"></video><span class="work-label">Brand films</span></div>
-<div class="work-card"><video autoplay muted loop playsinline preload="auto"><source src="assets/video/Work/product-launches.mp4" type="video/mp4"></video><span class="work-label">Product launches</span></div>
-<div class="work-card"><video autoplay muted loop playsinline preload="auto"><source src="assets/video/Work/explainers.mp4" type="video/mp4"></video><span class="work-label">Explainers</span></div>
-<div class="work-card"><video autoplay muted loop playsinline preload="auto"><source src="assets/video/Work/motion-graphics.mp4" type="video/mp4"></video><span class="work-label">Motion graphics</span></div>
-<div class="work-card"><video autoplay muted loop playsinline preload="auto"><source src="assets/video/Work/behind-the-scenes.mp4" type="video/mp4"></video><span class="work-label">Behind the scenes</span></div>
-<div class="work-card"><video autoplay muted loop playsinline preload="auto"><source src="assets/video/Work/testimonials.mp4" type="video/mp4"></video><span class="work-label">Testimonials</span></div>
-</div></section>
-<!-- ============ WORK LIGHTBOX (video player overlay) ============ -->
-<div aria-hidden="true" class="work-lightbox" id="workLightbox">
-<div class="work-lightbox__backdrop" id="workLightboxBackdrop"></div>
-<div class="work-lightbox__inner">
-<button aria-label="Close video" class="work-lightbox__close" id="workLightboxClose">×</button>
-<button aria-label="Previous video" class="work-lightbox__nav work-lightbox__nav--prev" id="workLightboxPrev">❮</button>
-<video class="work-lightbox__video" controls="" id="workLightboxVideo" playsinline=""></video>
-<button aria-label="Next video" class="work-lightbox__nav work-lightbox__nav--next" id="workLightboxNext">❯</button>
-<span class="work-lightbox__label" id="workLightboxLabel"></span>
-</div>
+
+    <article class="work-card">
+        <video autoplay muted loop playsinline preload="auto">
+            <source src="assets/video/Work/brand-films.mp4" type="video/mp4">
+        </video>
+        <div class="work-overlay">Brand Films</div>
+    </article>
+
+    <article class="work-card">
+        <video autoplay muted loop playsinline preload="auto">
+            <source src="assets/video/Work/product-launches.mp4" type="video/mp4">
+        </video>
+        <div class="work-overlay">Product Launches</div>
+    </article>
+
+    <article class="work-card">
+        <video autoplay muted loop playsinline preload="auto">
+            <source src="assets/video/Work/explainers.mp4" type="video/mp4">
+        </video>
+        <div class="work-overlay">Explainers</div>
+    </article>
+
+    <article class="work-card">
+        <video autoplay muted loop playsinline preload="auto">
+            <source src="assets/video/Work/motion-graphics.mp4" type="video/mp4">
+        </video>
+        <div class="work-overlay">Motion Graphics</div>
+    </article>
+
+    <article class="work-card">
+        <video autoplay muted loop playsinline preload="auto">
+            <source src="assets/video/Work/behind-the-scenes.mp4" type="video/mp4">
+        </video>
+        <div class="work-overlay">Behind The Scenes</div>
+    </article>
+
+    <article class="work-card">
+        <video autoplay muted loop playsinline preload="auto">
+            <source src="assets/video/Work/testimonials.mp4" type="video/mp4">
+        </video>
+        <div class="work-overlay">Testimonials</div>
+    </article>
+
 </div>
 <!-- ============ ABOUT ============ -->
 <section class="section about" id="about">
