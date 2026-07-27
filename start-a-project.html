@@ -6,9 +6,6 @@
   <title>Start a Project — Darkness</title>
   <meta name="description" content="Start a project with Darkness.">
 
-  <link rel="icon" type="image/png" href="assets/img/logo.png">
-  <link rel="apple-touch-icon" href="assets/img/logo.png">
-
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="home.css">
   <link rel="stylesheet" href="marketplace.css">
@@ -295,16 +292,15 @@
       justify-content: space-between;
     }
 
-    /* Bigger, circular logo */
-    .project-page .nav__mark-glyph {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      display: inline-block;
+    .project-page .nav__mark-glyph{
+      width:22px;
+      height:22px;
+      object-fit:contain;
     }
 
-</style>
+
+.social-icons{display:flex;gap:16px;align-items:center}.social-icons a{color:#111;font-size:22px;text-decoration:none}.social-icons a:hover{opacity:.7;transform:translateY(-2px);display:inline-block}</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 </head>
 
 <body class="project-page">
@@ -312,8 +308,7 @@
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__mark" aria-label="Darkness home">
-        <img src="assets/img/logo.png" alt="" class="nav__mark-glyph" aria-hidden="true">
-        Darkness
+        <img src="assets/img/logo-circle.png" alt="Darkness Logo" class="nav__mark-glyph">
       </a>
 
       <nav class="nav__links" aria-label="Primary">
@@ -325,10 +320,6 @@
         <a href="index.html#testimonials">Clients</a>
         <a href="#socials">Socials</a>
       </nav>
-
-      <div class="nav__right">
-        <a href="start-a-project.html" class="nav__cta">Start a project</a>
-      </div>
     </div>
   </header>
 
@@ -429,48 +420,34 @@
 
         <aside class="project-side">
           <div class="side-block">
-            <p class="side-label">What happens next</p>
-            <p>We'll review the brief, then reach out by email if the project feels like a good fit.</p>
+            <p class="side-label">Contact</p>
+            <p><a href="mailto:darknesscreations0@gmail.com">darknesscreations0@gmail.com</a></p>
           </div>
 
           <div class="side-block">
-            <p class="side-label">Good to include</p>
-            <ul class="side-list">
-              <li>What you're trying to make</li>
-              <li>What you need from us</li>
-              <li>Your rough timeline</li>
-              <li>Any useful references or links</li>
-            </ul>
+            <p class="side-label">Socials</p>
+            <div class="social-icons">
+              <a href="https://www.instagram.com/darknessx0/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+              <a href="https://www.behance.net/abdullahkazmi3" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-behance"></i></a>
+              <a href="https://youtube.com/@darknesssx0" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
+              <a href="https://www.fiverr.com/s/xXGyaAB" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-briefcase"></i></a>
+              <a href="https://www.linkedin.com/in/~abdullah-kazmi-111919369" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i></a>
+              <a href="https://x.com/failure_kazmi" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
           </div>
 
           <div class="side-block">
-            <p class="side-label">Not ready yet?</p>
-            <p>That's fine. You can always <a href="index.html#newsletter">subscribe</a> and follow what we're making.</p>
+            <p class="side-label">Location</p>
+            <p>Uttarakhand, India</p>
+          </div>
+
+          <div class="side-block">
+            <p>© 2026 Darkness</p>
           </div>
         </aside>
 
       </section>
 
-      <section id="socials" class="project-socials">
-        <div>
-          <p class="project-eyebrow">Stay connected</p>
-          <h2>Find Darkness<br><span>elsewhere.</span></h2>
-        </div>
-        <div class="social-grid">
-          <a href="#" class="social-card">
-            <span>Instagram</span><span>↗</span>
-          </a>
-          <a href="#" class="social-card">
-            <span>X / Twitter</span><span>↗</span>
-          </a>
-          <a href="#" class="social-card">
-            <span>YouTube</span><span>↗</span>
-          </a>
-          <a href="#" class="social-card">
-            <span>Discord</span><span>↗</span>
-          </a>
-        </div>
-      </section>
     </div>
   </main>
 
