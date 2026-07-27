@@ -16,10 +16,10 @@
 const SUPABASE_URL = 'https://sqayzhsybgfgyrnpwxyn.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_t-_OryiioljtSOGH985nAw_z8MJ2wk4';
 
-const supabaseClient = (window.supabase && SUPABASE_URL.startsWith('http'))
+window.supabaseClient = (window.supabase && SUPABASE_URL.startsWith('http'))
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
   : null;
 
-if (!supabaseClient) {
+if (!window.supabaseClient) {
   console.warn('Supabase is not configured yet — fill in assets/js/supabase-config.js with your project URL and anon key.');
 }
