@@ -290,6 +290,17 @@
 
     .project-page .nav {
       justify-content: space-between;
+      /* Scroll away with the page instead of staying pinned to the top */
+      position: static;
+    }
+
+    /* Bigger, circular logo */
+    .project-page .nav__mark-glyph {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: inline-block;
     }
 
 </style>
@@ -337,7 +348,7 @@
 
       <section class="project-content">
 
-        <form class="project-form-card" id="projectForm">
+        <form class="project-form-card" id="projectForm" action="https://formsubmit.co/darknesscreations0@gmail.com" method="POST">
           <div class="project-form-head">
             <h2>Project details</h2>
             <span>All fields marked * are required</span>
@@ -466,13 +477,28 @@
     const form = document.getElementById("projectForm");
     const status = document.getElementById("projectStatus");
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      const data = Object.fromEntries(new FormData(form).entries());
-      console.log("Project inquiry:", data);
+      const data = new FormData(form);
+      status.textContent = "Sending…";
 
-      status.textContent = "Form ready — we'll connect the submission service next.";
+      try {
+        const response = await fetch("https://formsubmit.co/ajax/darknesscreations0@gmail.com", {
+          method: "POST",
+          headers: { "Accept": "application/json" },
+          body: data
+        });
+
+        if (response.ok) {
+          status.textContent = "Thanks — your inquiry is in. We'll be in touch by email.";
+          form.reset();
+        } else {
+          status.textContent = "Something went wrong sending that. Please try again or email us directly.";
+        }
+      } catch (err) {
+        status.textContent = "Something went wrong sending that. Please try again or email us directly.";
+      }
     });
   </script>
 </body>
