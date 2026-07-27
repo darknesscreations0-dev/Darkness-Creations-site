@@ -294,9 +294,11 @@
 
 
     .project-page .nav__mark-glyph{
-      width:22px;
-      height:22px;
-      object-fit:contain;
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      object-fit:cover;
+      display:block;
     }
 
 </style>
@@ -307,8 +309,7 @@
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__mark" aria-label="Darkness home">
-        <img src="assets/img/logo.png" alt="" class="nav__mark-glyph" aria-hidden="true">
-        Darkness
+        <img src="assets/img/logo.png" alt="Darkness Logo" class="nav__mark-glyph">
       </a>
 
       <nav class="nav__links" aria-label="Primary">
@@ -321,9 +322,7 @@
         <a href="#socials">Socials</a>
       </nav>
 
-      <div class="nav__right">
-        <a href="start-a-project.html" class="nav__cta">Start a project</a>
-      </div>
+      <div class="nav__right"></div>
     </div>
   </header>
 
