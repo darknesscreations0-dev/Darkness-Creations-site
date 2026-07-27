@@ -1,16 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Start a Project — Darkness</title>
-  <meta name="description" content="Start a project with Darkness.">
-
-  <link rel="stylesheet" href="tokens.css">
-  <link rel="stylesheet" href="home.css">
-  <link rel="stylesheet" href="marketplace.css">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Start a Project — Darkness</title>
+<meta content="Start a project with Darkness." name="description"/>
+<link href="tokens.css" rel="stylesheet"/>
+<link href="home.css" rel="stylesheet"/>
+<link href="marketplace.css" rel="stylesheet"/>
+<style>
     /* Page-specific layout; visual language follows the existing Darkness UI. */
     .project-page {
       font-family: -apple-system, 'SF Pro Display', 'Inter', system-ui, sans-serif;
@@ -299,198 +298,124 @@
       object-fit:contain;
     }
 
-</style>
-</head>
 
+.social-icons{display:flex;gap:16px;align-items:center}.social-icons a{color:#111;font-size:22px;text-decoration:none}.social-icons a:hover{opacity:.7;transform:translateY(-2px);display:inline-block}</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/></head>
 <body class="project-page">
+<header class="nav">
+<div class="nav__inner">
+<a aria-label="Darkness home" class="nav__mark" href="index.html"><img alt="Darkness Logo" class="nav__mark-glyph" src="assets/img/logo-circle.png"/></a>
+<nav aria-label="Primary" class="nav__links">
+<a href="index.html#work">Work</a>
+<a href="index.html#about">Studio</a>
+<a href="index.html#pipeline">Process</a>
+<a href="marketplace.html">Marketplace</a>
+<a href="index.html#ventures">Ventures</a>
+<a href="index.html#testimonials">Clients</a>
+<a href="#socials">Socials</a>
+</nav>
 
-  <header class="nav">
-    <div class="nav__inner">
-      <a href="index.html" class="nav__mark" aria-label="Darkness home">
-        <img src="assets/img/logo.png" alt="" class="nav__mark-glyph" aria-hidden="true">
-        Darkness
-      </a>
-
-      <nav class="nav__links" aria-label="Primary">
-        <a href="index.html#work">Work</a>
-        <a href="index.html#about">Studio</a>
-        <a href="index.html#pipeline">Process</a>
-        <a href="marketplace.html">Marketplace</a>
-        <a href="index.html#ventures">Ventures</a>
-        <a href="index.html#testimonials">Clients</a>
-        <a href="#socials">Socials</a>
-      </nav>
-
-      <div class="nav__right">
-        <a href="start-a-project.html" class="nav__cta">Start a project</a>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <div class="project-wrap">
-
-      <section class="project-intro">
-        <div>
-          <p class="project-eyebrow">Start a project</p>
-          <h1 class="project-title">Let's make<br>something <span style="opacity:.42">great.</span></h1>
-        </div>
-
-        <p class="project-copy">
+</div>
+</header>
+<main>
+<div class="project-wrap">
+<section class="project-intro">
+<div>
+<p class="project-eyebrow">Start a project</p>
+<h1 class="project-title">Let's make<br/>something <span style="opacity:.42">great.</span></h1>
+</div>
+<p class="project-copy">
           Have a product, brand, film, or idea that needs to exist?
           Tell us what you're working on. We'll take a look and get back to you.
         </p>
-      </section>
-
-      <section class="project-content">
-
-        <form class="project-form-card" id="projectForm">
-          <div class="project-form-head">
-            <h2>Project details</h2>
-            <span>All fields marked * are required</span>
-          </div>
-
-          <div class="fields">
-            <div class="field">
-              <label for="name">Name *</label>
-              <input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" required>
-            </div>
-
-            <div class="field">
-              <label for="email">Email *</label>
-              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required>
-            </div>
-
-            <div class="field">
-              <label for="company">Company / Brand</label>
-              <input id="company" name="company" type="text" autocomplete="organization" placeholder="Your company">
-            </div>
-
-            <div class="field">
-              <label for="service">Project type *</label>
-              <select id="service" name="service" required>
-                <option value="" selected disabled>Select a project type</option>
-                <option>Motion Design</option>
-                <option>Branding</option>
-                <option>Software / Product</option>
-                <option>Creative Development</option>
-                <option>Other</option>
-              </select>
-            </div>
-
-            <div class="field full">
-              <label for="message">Tell us about it *</label>
-              <textarea id="message" name="message" placeholder="What are you building? What would you like Darkness to help with?" required></textarea>
-            </div>
-
-            <div class="field">
-              <label for="budget">Budget</label>
-              <select id="budget" name="budget">
-                <option value="" selected>Select a range</option>
-                <option>Under $500</option>
-                <option>$500 – $1,500</option>
-                <option>$1,500 – $5,000</option>
-                <option>$5,000+</option>
-                <option>Not sure yet</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="timeline">Timeline</label>
-              <select id="timeline" name="timeline">
-                <option value="" selected>Select a timeline</option>
-                <option>ASAP</option>
-                <option>Within 2 weeks</option>
-                <option>Within 1 month</option>
-                <option>1–3 months</option>
-                <option>Flexible</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="project-actions">
-            <p class="project-note">
+</section>
+<section class="project-content">
+<form class="project-form-card" id="projectForm">
+<div class="project-form-head">
+<h2>Project details</h2>
+<span>All fields marked * are required</span>
+</div>
+<div class="fields">
+<div class="field">
+<label for="name">Name *</label>
+<input autocomplete="name" id="name" name="name" placeholder="Your name" required="" type="text"/>
+</div>
+<div class="field">
+<label for="email">Email *</label>
+<input autocomplete="email" id="email" name="email" placeholder="you@company.com" required="" type="email"/>
+</div>
+<div class="field">
+<label for="company">Company / Brand</label>
+<input autocomplete="organization" id="company" name="company" placeholder="Your company" type="text"/>
+</div>
+<div class="field">
+<label for="service">Project type *</label>
+<select id="service" name="service" required="">
+<option disabled="" selected="" value="">Select a project type</option>
+<option>Motion Design</option>
+<option>Branding</option>
+<option>Software / Product</option>
+<option>Creative Development</option>
+<option>Other</option>
+</select>
+</div>
+<div class="field full">
+<label for="message">Tell us about it *</label>
+<textarea id="message" name="message" placeholder="What are you building? What would you like Darkness to help with?" required=""></textarea>
+</div>
+<div class="field">
+<label for="budget">Budget</label>
+<select id="budget" name="budget">
+<option selected="" value="">Select a range</option>
+<option>Under $500</option>
+<option>$500 – $1,500</option>
+<option>$1,500 – $5,000</option>
+<option>$5,000+</option>
+<option>Not sure yet</option>
+</select>
+</div>
+<div class="field">
+<label for="timeline">Timeline</label>
+<select id="timeline" name="timeline">
+<option selected="" value="">Select a timeline</option>
+<option>ASAP</option>
+<option>Within 2 weeks</option>
+<option>Within 1 month</option>
+<option>1–3 months</option>
+<option>Flexible</option>
+</select>
+</div>
+</div>
+<div class="project-actions">
+<p class="project-note">
               We'll only use your details to discuss this project and respond to your inquiry.
             </p>
-
-            <button class="btn btn--primary project-submit" type="submit">
-              <span>Send inquiry</span>
-              <span aria-hidden="true">↗</span>
-            </button>
-          </div>
-
-          <p class="project-status" id="projectStatus" role="status" aria-live="polite"></p>
-        </form>
-
-        <aside class="project-side">
-  <div class="side-block">
-    <p class="side-label">Contact</p>
-    <p><a href="mailto:hello@darkness.com">hello@darkness.com</a></p>
-  </div>
-
-  <div class="side-block">
-    <p class="side-label">Socials</p>
-    <a href="https://www.instagram.com/darknessx0/" target="_blank" rel="noopener noreferrer">
-    Instagram ↗
-</a>
-
-<a href="https://www.behance.net/abdullahkazmi3" target="_blank" rel="noopener noreferrer">
-    Behance ↗
-</a>
-
-<a href="https://youtube.com/@darknesssx0" target="_blank" rel="noopener noreferrer">
-    YouTube ↗
-</a>
-
-<a href="https://www.fiverr.com/s/xXGyaAB" target="_blank" rel="noopener noreferrer">
-    Fiverr ↗
-</a>
-
-<a href="https://www.linkedin.com/in/~abdullah-kazmi-111919369" target="_blank" rel="noopener noreferrer">
-    LinkedIn ↗
-</a>
-
-<a href="https://x.com/failure_kazmi" target="_blank" rel="noopener noreferrer">
-    X ↗
-</a>
-  </div>
-
-  <div class="side-block">
-    <p class="side-label">Location</p>
-    <p>Uttarakhand, India</p>
-  </div>
-
-  <div class="side-block">
-    <p>© 2026 Darkness</p>
-  </div>
+<button class="btn btn--primary project-submit" type="submit">
+<span>Send inquiry</span>
+<span aria-hidden="true">↗</span>
+</button>
+</div>
+<p aria-live="polite" class="project-status" id="projectStatus" role="status"></p>
+</form>
+<aside class="project-side">
+<div class="side-block">
+<p class="side-label">Contact</p>
+<p><a href="mailto:hello@darkness.com">hello@darkness.com</a></p>
+</div>
+<div class="side-block"><p class="side-label">Socials</p><div class="social-icons"><a href="https://www.instagram.com/darknessx0/" rel="noopener noreferrer" target="_blank"><i class="fa-brands fa-instagram"></i></a><a href="https://www.behance.net/abdullahkazmi3" rel="noopener noreferrer" target="_blank"><i class="fa-brands fa-behance"></i></a><a href="https://youtube.com/@darknesssx0" rel="noopener noreferrer" target="_blank"><i class="fa-brands fa-youtube"></i></a><a href="https://www.fiverr.com/s/xXGyaAB" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-briefcase"></i></a><a href="https://www.linkedin.com/in/~abdullah-kazmi-111919369" rel="noopener noreferrer" target="_blank"><i class="fa-brands fa-linkedin"></i></a><a href="https://x.com/failure_kazmi" rel="noopener noreferrer" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></div></div>
+<div class="side-block">
+<p class="side-label">Location</p>
+<p>Uttarakhand, India</p>
+</div>
+<div class="side-block">
+<p>© 2026 Darkness</p>
+</div>
 </aside>
+</section>
 
-      </section>
-
-      <section id="socials" class="project-socials">
-        <div>
-          <p class="project-eyebrow">Stay connected</p>
-          <h2>Find Darkness<br><span>elsewhere.</span></h2>
-        </div>
-        <div class="social-grid">
-          <a href="#" class="social-card">
-            <span>Instagram</span><span>↗</span>
-          </a>
-          <a href="#" class="social-card">
-            <span>X / Twitter</span><span>↗</span>
-          </a>
-          <a href="#" class="social-card">
-            <span>YouTube</span><span>↗</span>
-          </a>
-          <a href="#" class="social-card">
-            <span>Discord</span><span>↗</span>
-          </a>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <script>
+</div>
+</main>
+<script>
     const form = document.getElementById("projectForm");
     const status = document.getElementById("projectStatus");
 
