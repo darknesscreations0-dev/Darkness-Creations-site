@@ -181,7 +181,7 @@
       border: 0;
       cursor: pointer;
     }
-    
+
     .project-status {
       margin: 12px 0 0;
       min-height: 18px;
@@ -294,11 +294,9 @@
 
 
     .project-page .nav__mark-glyph{
-      width:42px;
-      height:42px;
-      border-radius:50%;
-      object-fit:cover;
-      display:block;
+      width:22px;
+      height:22px;
+      object-fit:contain;
     }
 
 </style>
@@ -309,7 +307,8 @@
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__mark" aria-label="Darkness home">
-        <img src="assets/img/logo.png" alt="Darkness Logo" class="nav__mark-glyph">
+        <img src="assets/img/logo.png" alt="" class="nav__mark-glyph" aria-hidden="true">
+        Darkness
       </a>
 
       <nav class="nav__links" aria-label="Primary">
@@ -322,7 +321,9 @@
         <a href="#socials">Socials</a>
       </nav>
 
-      <div class="nav__right"></div>
+      <div class="nav__right">
+        <a href="start-a-project.html" class="nav__cta">Start a project</a>
+      </div>
     </div>
   </header>
 
@@ -371,26 +372,9 @@
                 <option value="" selected disabled>Select a project type</option>
                 <option>Motion Design</option>
                 <option>Branding</option>
-               <option>Brand Identity Design</option>
-               <option>Logo Design</option>
-               <option>Social Media Design</option>
-               <option>Poster / Advertisement Design</option>
-               <option>Thumbnail Design</option>
-               <option>Presentation Design</option>
-               <option>UI / UX Design</option>
-               <option>Website Design</option>
-               <option>Motion Graphics</option>
-               <option>Video Editing</option>
-               <option>VFX</option>
-               <option>3D Animation</option>
-               <option>Content Strategy</option>
-               <option>Content Direction</option>
-               <option>Creative Direction</option>
-               <option>Visual Identity</option>
-               <option>Marketing Creatives</option>
-               <option>Complete Content Management</option>
-               <option>Long-Term Creative Partnership</option>
-               <option>Other</option>
+                <option>Software / Product</option>
+                <option>Creative Development</option>
+                <option>Other</option>
               </select>
             </div>
 
@@ -439,26 +423,32 @@
         </form>
 
         <aside class="project-side">
-          <div class="side-block">
-            <p class="side-label">What happens next</p>
-            <p>We'll review the brief, then reach out by email if the project feels like a good fit.</p>
-          </div>
+  <div class="side-block">
+    <p class="side-label">Contact</p>
+    <p><a href="mailto:hello@darkness.com">hello@darkness.com</a></p>
+  </div>
 
-          <div class="side-block">
-            <p class="side-label">Good to include</p>
-            <ul class="side-list">
-              <li>What you're trying to make</li>
-              <li>What you need from us</li>
-              <li>Your rough timeline</li>
-              <li>Any useful references or links</li>
-            </ul>
-          </div>
+  <div class="side-block">
+    <p class="side-label">Socials</p>
+    <ul class="side-list">
+      <li><a href="#">Instagram ↗</a></li>
+      <li><a href="#">YouTube ↗</a></li>
+      <li><a href="#">Discord ↗</a></li>
+      <li><a href="#">Behance ↗</a></li>
+      <li><a href="#">LinkedIn ↗</a></li>
+      <li><a href="#">X ↗</a></li>
+    </ul>
+  </div>
 
-          <div class="side-block">
-            <p class="side-label">Not ready yet?</p>
-            <p>That's fine. You can always <a href="index.html#newsletter">subscribe</a> and follow what we're making.</p>
-          </div>
-        </aside>
+  <div class="side-block">
+    <p class="side-label">Location</p>
+    <p>Uttarakhand, India</p>
+  </div>
+
+  <div class="side-block">
+    <p>© 2026 Darkness</p>
+  </div>
+</aside>
 
       </section>
 
