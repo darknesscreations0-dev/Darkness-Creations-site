@@ -13,34 +13,285 @@
 <link rel="stylesheet" href="assets/css/tokens.css?v=1">
 <link rel="stylesheet" href="assets/css/home.css?v=1">
 <link rel="stylesheet" href="assets/css/marketplace.css?v=1">
+
 <style>
-  .pdp{ max-width: 1000px; margin: 0 auto; padding: 3rem var(--gutter) var(--section-pad); }
-  .pdp__back{ display:inline-block; margin-bottom:1.5rem; color:var(--text-faint); text-decoration:none; font-size:.9rem; }
-  .pdp__back:hover{ color:var(--text); }
-  .pdp__layout{ display:flex; gap:2.5rem; align-items:flex-start; flex-wrap:wrap; }
-  .pdp__media-col{ flex:1 1 480px; min-width:0; }
-  .pdp__info-col{ flex:1 1 360px; min-width:280px; }
-  .pdp__cover{
-    border-radius: var(--radius-md, 12px);
-    overflow:hidden;
-    background:var(--surface-2);
-    width:100%;
-    aspect-ratio:16/10;
-    display:block;
-  }
-  .pdp__cover img, .pdp__cover video{
-    display:block;
-    width:100% !important;
-    height:100% !important;
-    object-fit:cover !important;
-  }
-  .pdp__gallery{ display:flex; flex-direction:column; gap:.75rem; margin-top:.75rem; }
-  .pdp__gallery img, .pdp__gallery video{ width:100%; border-radius:8px; display:block; }
-  .pdp__title{ margin:.4rem 0 .6rem; font-size:2rem; }
-  .pdp__desc{ color:var(--text-faint); line-height:1.6; margin-bottom:1.2rem; white-space:pre-wrap; }
-  .pdp__tags{ display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:1.2rem; }
-  .pdp__price-row{ margin-bottom:1.2rem; font-size:1.4rem; font-weight:600; }
-  .pdp__msg{ margin-top:.8rem; font-size:.9rem; }
+/* ============================================================
+   PDP — APPLE-MINIMAL LAYOUT
+   ============================================================ */
+
+/* ---------- Sticky buy bar ---------- */
+.pdp-bar{
+  position:sticky;
+  top:0; left:0; right:0;
+  z-index:90;
+  background:rgba(10,10,10,0.82);
+  backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  border-bottom:1px solid var(--border);
+  padding:.85rem var(--gutter);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1.5rem;
+  transform:translateY(-110%);
+  opacity:0;
+  transition:transform .4s var(--ease), opacity .35s var(--ease);
+  pointer-events:none;
+}
+.pdp-bar.is-visible{
+  transform:translateY(0);
+  opacity:1;
+  pointer-events:auto;
+}
+.pdp-bar__left{ display:flex; align-items:center; gap:.9rem; min-width:0; }
+.pdp-bar__thumb{
+  width:44px; height:44px;
+  border-radius:10px;
+  overflow:hidden;
+  flex-shrink:0;
+  background:var(--surface-2);
+}
+.pdp-bar__thumb img{ width:100%; height:100%; object-fit:cover; }
+.pdp-bar__title{
+  font-family:var(--font-display);
+  font-size:.95rem;
+  font-weight:500;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  color:var(--text);
+}
+.pdp-bar__right{ display:flex; align-items:center; gap:1.2rem; flex-shrink:0; }
+.pdp-bar__price{ font-size:1.05rem; font-weight:600; color:var(--text); white-space:nowrap; }
+.pdp-bar__price .old{ text-decoration:line-through; opacity:.45; font-size:.8em; margin-right:.3rem; font-weight:400; }
+.pdp-bar__buy{
+  padding:.55rem 1.5rem;
+  border-radius:980px;
+  border:none;
+  background:var(--text);
+  color:#0a0a0a;
+  font-size:.88rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:opacity .25s var(--ease), transform .25s var(--ease);
+  white-space:nowrap;
+}
+.pdp-bar__buy:hover{ opacity:.85; transform:scale(1.02); }
+
+/* ---------- Hero ---------- */
+.pdp-hero{
+  padding:calc(var(--section-pad) * .45) var(--gutter) 0;
+  max-width:1200px;
+  margin:0 auto;
+}
+.pdp-hero__eyebrow{
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--text-faint);
+  margin-bottom:.6rem;
+}
+.pdp-hero__title{
+  font-family:var(--font-display);
+  font-size:clamp(2.2rem, 5vw, 3.6rem);
+  font-weight:600;
+  letter-spacing:-.025em;
+  line-height:1.1;
+  max-width:18ch;
+  margin-bottom:1.2rem;
+}
+.pdp-hero__desc{
+  color:var(--text-dim);
+  font-size:1.1rem;
+  line-height:1.65;
+  max-width:56ch;
+  margin-bottom:2rem;
+}
+
+/* ---------- Main image ---------- */
+.pdp-main-image{
+  width:100%;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  background:var(--surface-2);
+  aspect-ratio:16/10;
+  position:relative;
+}
+.pdp-main-image img,
+.pdp-main-image video{
+  display:block;
+  width:100%; height:100%;
+  object-fit:cover;
+}
+
+/* ---------- Thumbnail strip ---------- */
+.pdp-thumbs{
+  display:flex;
+  gap:.65rem;
+  padding:1.2rem 0;
+  overflow-x:auto;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  justify-content:center;
+}
+.pdp-thumbs::-webkit-scrollbar{ display:none; }
+.pdp-thumb{
+  width:72px; height:50px;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+  flex-shrink:0;
+  border:2px solid transparent;
+  opacity:.5;
+  transition:opacity .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease);
+  background:var(--surface-2);
+}
+.pdp-thumb:hover{ opacity:.75; transform:scale(1.05); }
+.pdp-thumb.is-active{
+  opacity:1;
+  border-color:var(--text);
+}
+.pdp-thumb img,
+.pdp-thumb video{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* ---------- Divider ---------- */
+.pdp-divider{
+  border:none;
+  border-top:1px solid var(--border);
+  margin:0 var(--gutter);
+}
+
+/* ---------- Section wrapper ---------- */
+.pdp-section{
+  max-width:1000px;
+  margin:0 auto;
+  padding:clamp(2.5rem, 5vw, 4.5rem) var(--gutter);
+}
+.pdp-section__label{
+  font-size:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--text-faint);
+  margin-bottom:1.2rem;
+}
+
+/* ---------- Price + buy section ---------- */
+.pdp-purchase{
+  text-align:center;
+  padding:clamp(3rem, 6vw, 5rem) var(--gutter);
+  max-width:600px;
+  margin:0 auto;
+}
+.pdp-purchase__price{
+  font-size:clamp(2rem, 4vw, 3.2rem);
+  font-weight:600;
+  letter-spacing:-.02em;
+  margin-bottom:.3rem;
+}
+.pdp-purchase__price .old{
+  text-decoration:line-through;
+  opacity:.4;
+  font-size:.55em;
+  font-weight:400;
+  margin-right:.4rem;
+}
+.pdp-purchase__note{
+  color:var(--text-faint);
+  font-size:.9rem;
+  margin-bottom:1.8rem;
+}
+.pdp-purchase__btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:1rem 3.2rem;
+  border-radius:980px;
+  border:none;
+  background:var(--text);
+  color:#0a0a0a;
+  font-size:1.05rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:opacity .25s var(--ease), transform .25s var(--ease);
+}
+.pdp-purchase__btn:hover{ opacity:.85; transform:scale(1.03); }
+.pdp-purchase__btn svg{ width:18px; height:18px; }
+.pdp-purchase__msg{
+  margin-top:1rem;
+  font-size:.88rem;
+  color:var(--text-faint);
+  min-height:1.3em;
+}
+
+/* ---------- Tags ---------- */
+.pdp-tags{
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-top:1.6rem;
+}
+
+/* ---------- Details grid ---------- */
+.pdp-details-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  gap:1px;
+  background:var(--border);
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  margin-top:.5rem;
+}
+.pdp-detail-cell{
+  background:var(--surface);
+  padding:1.5rem 1.4rem;
+}
+.pdp-detail-cell__label{
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--text-faint);
+  margin-bottom:.35rem;
+}
+.pdp-detail-cell__value{
+  font-size:1rem;
+  font-weight:500;
+  color:var(--text);
+}
+
+/* ---------- Related products ---------- */
+.pdp-related-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:1.2rem;
+  margin-top:.5rem;
+}
+
+/* ---------- Animations ---------- */
+@keyframes pdpFadeUp{
+  from{ opacity:0; transform:translateY(28px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+.pdp-anim{
+  opacity:0;
+  animation:pdpFadeUp .7s var(--ease) forwards;
+}
+.pdp-anim-d1{ animation-delay:.1s; }
+.pdp-anim-d2{ animation-delay:.2s; }
+.pdp-anim-d3{ animation-delay:.3s; }
+.pdp-anim-d4{ animation-delay:.4s; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:640px){
+  .pdp-bar{ padding:.65rem 1rem; }
+  .pdp-bar__title{ font-size:.85rem; max-width:140px; }
+  .pdp-bar__buy{ padding:.5rem 1.1rem; font-size:.82rem; }
+  .pdp-thumb{ width:58px; height:40px; }
+}
 </style>
 </head>
 <body>
@@ -64,10 +315,21 @@
   </div>
 </header>
 
+<!-- ============ STICKY BUY BAR ============ -->
+<div class="pdp-bar" id="pdpBar">
+  <div class="pdp-bar__left">
+    <div class="pdp-bar__thumb" id="pdpBarThumb"></div>
+    <span class="pdp-bar__title" id="pdpBarTitle"></span>
+  </div>
+  <div class="pdp-bar__right">
+    <span class="pdp-bar__price" id="pdpBarPrice"></span>
+    <button class="pdp-bar__buy" id="pdpBarBuy">Buy</button>
+  </div>
+</div>
+
 <main>
-  <div class="pdp">
-    <a href="marketplace.html" class="pdp__back">&larr; Back to marketplace</a>
-    <div id="pdpContent">
+  <div id="pdpContent">
+    <div class="pdp-purchase" style="min-height:60vh; display:flex; align-items:center; justify-content:center;">
       <p class="admin-empty">Loading…</p>
     </div>
   </div>
@@ -93,80 +355,210 @@
 <script>
 (function () {
   const content = document.getElementById('pdpContent');
+  const bar     = document.getElementById('pdpBar');
+  const barThumb  = document.getElementById('pdpBarThumb');
+  const barTitle  = document.getElementById('pdpBarTitle');
+  const barPrice  = document.getElementById('pdpBarPrice');
+  const barBuyBtn = document.getElementById('pdpBarBuy');
 
-  function priceHtml(product) {
-    if (product.sale_price != null && product.sale_price !== '') {
-      return `<span style="text-decoration:line-through;opacity:.5;font-size:.75em;">$${product.price}</span> <span>$${product.sale_price}</span>`;
-    }
-    if (!product.price || product.price == 0) return `<span class="product-card__price is-free">Free</span>`;
-    return `<span>$${product.price}</span>`;
+  /* ---- helpers ---- */
+  function priceHtml(p, cls) {
+    const c = cls || '';
+    if (p.sale_price != null && p.sale_price !== '')
+      return `<span class="old">$${p.price}</span><span class="${c}">$${p.sale_price}</span>`;
+    if (!p.price || p.price == 0) return `<span style="color:#34d399">Free</span>`;
+    return `<span class="${c}">$${p.price}</span>`;
   }
 
-  function mediaBlock(url, isVideo) {
-    return isVideo
-      ? `<video src="${url}" ${url ? 'controls' : ''} playsinline></video>`
-      : `<img src="${url}" alt="">`;
+  function pricePlain(p) {
+    if (p.sale_price != null && p.sale_price !== '') return `$${p.sale_price}`;
+    if (!p.price || p.price == 0) return 'Free';
+    return `$${p.price}`;
   }
 
+  function media(url, video, cls) {
+    if (!url) return '';
+    return video
+      ? `<video src="${url}" class="${cls||''}" ${url?'controls':''} playsinline muted loop></video>`
+      : `<img src="${url}" class="${cls||''}" alt="">`;
+  }
+
+  function isVid(u){ return /\.(mp4|webm|mov)(\?|$)/i.test(u); }
+
+  /* ---- load ---- */
   async function load() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
-    if (!id) {
-      content.innerHTML = '<p class="admin-empty">No product specified.</p>';
-      return;
-    }
-    if (!window.supabaseClient) {
-      content.innerHTML = '<p class="admin-empty">Store is not configured yet.</p>';
-      return;
-    }
+    if (!id) { content.innerHTML = '<p class="admin-empty">No product specified.</p>'; return; }
+    if (!window.supabaseClient) { content.innerHTML = '<p class="admin-empty">Store is not configured yet.</p>'; return; }
 
     const { data, error } = await window.supabaseClient
-      .from('products')
-      .select('*')
-      .eq('id', id)
-      .eq('is_active', true)
-      .single();
+      .from('products').select('*').eq('id', id).eq('is_active', true).single();
 
-    if (error || !data) {
-      content.innerHTML = '<p class="admin-empty">Product not found or no longer available.</p>';
-      return;
-    }
+    if (error || !data) { content.innerHTML = '<p class="admin-empty">Product not found.</p>'; return; }
 
     document.title = data.title + ' — Darkness';
 
-    const coverIsVideo = data.cover_type === 'video';
-    const galleryHtml = (data.preview_media || []).map((m) => {
-      const url = m.url || '';
-      const isVideo = /\.(mp4|webm|mov)(\?|$)/i.test(url);
-      return mediaBlock(url, isVideo);
-    }).join('');
+    /* --- cover + gallery --- */
+    const coverUrl  = data.cover_image_url || '';
+    const coverVid  = data.cover_type === 'video';
+    const previews  = (data.preview_media || []);
+    const allMedia  = [ { url: coverUrl, video: coverVid }, ...previews.map(m => ({ url: m.url||'', video: isVid(m.url||'') })) ].filter(m => m.url);
 
-    const tagsHtml = (data.tags || []).map((t) => `<span class="product-card__tag">${t}</span>`).join('');
+    /* --- thumbnail strip --- */
+    const thumbsHtml = allMedia.map((m, i) =>
+      `<div class="pdp-thumb ${i===0?'is-active':''}" data-idx="${i}">${media(m.url, m.video)}</div>`
+    ).join('');
 
+    /* --- tags --- */
+    const tagsHtml = (data.tags || []).map(t => `<span class="product-card__tag">${t}</span>`).join('');
+
+    /* --- specs / detail cells --- */
+    const specs = [];
+    if (data.category) specs.push({ label:'Category', value: data.category });
+    if (data.file_type) specs.push({ label:'File Type', value: data.file_type });
+    if (data.file_size) specs.push({ label:'File Size', value: data.file_size });
+    if (data.resolution) specs.push({ label:'Resolution', value: data.resolution });
+    if (data.version) specs.push({ label:'Version', value: data.version });
+    if (data.compatibility) specs.push({ label:'Compatibility', value: data.compatibility });
+
+    const specsHtml = specs.length
+      ? `<div class="pdp-details-grid">${specs.map(s =>
+          `<div class="pdp-detail-cell"><div class="pdp-detail-cell__label">${s.label}</div><div class="pdp-detail-cell__value">${s.value}</div></div>`
+        ).join('')}</div>`
+      : '';
+
+    /* --- build page --- */
     content.innerHTML = `
-      <div class="pdp__layout">
-        <div class="pdp__media-col">
-          <div class="pdp__cover">${mediaBlock(data.cover_image_url || '', coverIsVideo)}</div>
-          <div class="pdp__gallery">${galleryHtml}</div>
+      <!-- HERO -->
+      <section class="pdp-hero">
+        <span class="pdp-hero__eyebrow pdp-anim pdp-anim-d1">${data.category || 'Product'}</span>
+        <h1 class="pdp-hero__title pdp-anim pdp-anim-d2">${data.title}</h1>
+        <p class="pdp-hero__desc pdp-anim pdp-anim-d3">${data.description || ''}</p>
+      </section>
+
+      <!-- MAIN IMAGE -->
+      <section class="pdp-hero" style="padding-top:0;">
+        <div class="pdp-main-image pdp-anim pdp-anim-d3" id="pdpMainMedia">
+          ${allMedia.length ? media(allMedia[0].url, allMedia[0].video) : ''}
         </div>
-        <div class="pdp__info-col">
-          <span class="product-card__cat">${data.category || ''}</span>
-          <h1 class="pdp__title">${data.title}</h1>
-          <div class="pdp__tags">${tagsHtml}</div>
-          <p class="pdp__desc">${data.description || ''}</p>
-          <div class="pdp__price-row">${priceHtml(data)}</div>
-          <button class="btn btn--buy" style="width:100%;" id="pdpBuyBtn"><span>Buy now</span></button>
-          <p class="pdp__msg admin-msg" id="pdpMsg"></p>
-        </div>
-      </div>
+        ${allMedia.length > 1 ? `<div class="pdp-thumbs" id="pdpThumbs">${thumbsHtml}</div>` : ''}
+      </section>
+
+      <hr class="pdp-divider">
+
+      <!-- PURCHASE -->
+      <section class="pdp-purchase">
+        <div class="pdp-purchase__price">${priceHtml(data)}</div>
+        <p class="pdp-purchase__note">One-time purchase · Instant download</p>
+        <button class="pdp-purchase__btn" id="pdpMainBuy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          Buy now — ${pricePlain(data)}
+        </button>
+        <p class="pdp-purchase__msg" id="pdpMsg"></p>
+        ${tagsHtml ? `<div class="pdp-tags">${tagsHtml}</div>` : ''}
+      </section>
+
+      ${specsHtml ? `
+      <hr class="pdp-divider">
+      <section class="pdp-section">
+        <div class="pdp-section__label">Details</div>
+        ${specsHtml}
+      </section>` : ''}
+
+      <!-- RELATED (placeholder – populated if products exist) -->
+      <hr class="pdp-divider">
+      <section class="pdp-section">
+        <div class="pdp-section__label">You might also like</div>
+        <div class="pdp-related-grid" id="pdpRelated"></div>
+      </section>
     `;
 
-    document.getElementById('pdpBuyBtn').addEventListener('click', () => {
-      document.getElementById('pdpMsg').textContent = "Checkout isn't set up yet — coming soon.";
+    /* ---- sticky bar data ---- */
+    barThumb.innerHTML = allMedia.length ? media(allMedia[0].url, allMedia[0].video) : '';
+    barTitle.textContent = data.title;
+    barPrice.innerHTML   = priceHtml(data);
+
+    /* ---- sticky bar show/hide ---- */
+    const heroSection = document.querySelector('.pdp-purchase');
+    const io = new IntersectionObserver(([e]) => {
+      bar.classList.toggle('is-visible', !e.isIntersecting);
+    }, { threshold: 0 });
+    if (heroSection) io.observe(heroSection);
+
+    /* ---- thumbnail switching ---- */
+    const mainMedia = document.getElementById('pdpMainMedia');
+    const thumbs    = document.querySelectorAll('.pdp-thumb');
+    thumbs.forEach(t => {
+      t.addEventListener('click', () => {
+        const idx = +t.dataset.idx;
+        const m   = allMedia[idx];
+        if (!m) return;
+        mainMedia.innerHTML = media(m.url, m.video);
+        thumbs.forEach(x => x.classList.remove('is-active'));
+        t.classList.add('is-active');
+        /* mute + autoplay any video in main */
+        const v = mainMedia.querySelector('video');
+        if (v){ v.muted=true; v.autoplay=true; v.loop=true; }
+      });
     });
 
-    const coverVideo = content.querySelector('.pdp__cover video');
-    if (coverVideo) { coverVideo.muted = true; coverVideo.autoplay = true; coverVideo.loop = true; }
+    /* ---- buy buttons ---- */
+    const msg = "Checkout isn't set up yet — coming soon.";
+    document.getElementById('pdpMainBuy').onclick = () => { document.getElementById('pdpMsg').textContent = msg; };
+    barBuyBtn.onclick = () => {
+      document.getElementById('pdpMsg').textContent = msg;
+      window.scrollTo({ top: document.querySelector('.pdp-purchase').offsetTop - 80, behavior:'smooth' });
+    };
+
+    /* ---- cover video autoplay ---- */
+    const cv = mainMedia.querySelector('video');
+    if (cv){ cv.muted=true; cv.autoplay=true; cv.loop=true; }
+
+    /* ---- load related ---- */
+    loadRelated(data.category, data.id);
+  }
+
+  /* ---- related products ---- */
+  async function loadRelated(category, currentId) {
+    if (!window.supabaseClient || !category) return;
+    const grid = document.getElementById('pdpRelated');
+    const { data } = await window.supabaseClient
+      .from('products').select('id, title, cover_image_url, cover_type, price, sale_price, category')
+      .eq('is_active', true).eq('category', category).neq('id', currentId).limit(4);
+
+    if (!data || !data.length) {
+      /* fallback: grab any products */
+      const { data: fallback } = await window.supabaseClient
+        .from('products').select('id, title, cover_image_url, cover_type, price, sale_price, category')
+        .eq('is_active', true).neq('id', currentId).limit(4);
+      renderRelated(grid, fallback || []);
+      return;
+    }
+    renderRelated(grid, data);
+  }
+
+  function renderRelated(grid, items) {
+    if (!items.length) { grid.innerHTML = '<p style="color:var(--text-faint); font-size:.9rem;">No other products yet.</p>'; return; }
+    grid.innerHTML = items.map(p => {
+      const vid = p.cover_type === 'video';
+      const price = (p.sale_price != null && p.sale_price !== '') ? `$${p.sale_price}` : (!p.price || p.price==0) ? 'Free' : `$${p.price}`;
+      return `
+        <a href="product.html?id=${p.id}" class="product-card" style="text-decoration:none;">
+          <div class="product-card__media">
+            ${vid ? `<video src="${p.cover_image_url}" muted playsinline></video>` : `<img src="${p.cover_image_url}" alt="${p.title}">`}
+          </div>
+          <div class="product-card__body">
+            <span class="product-card__cat">${p.category||''}</span>
+            <h3>${p.title}</h3>
+            <div class="product-card__price-row">
+              <span class="product-card__price">${price}</span>
+            </div>
+          </div>
+        </a>`;
+    }).join('');
+    /* autoplay related videos */
+    grid.querySelectorAll('video').forEach(v => { v.muted=true; v.autoplay=true; v.loop=true; });
   }
 
   load();
