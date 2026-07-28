@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Darkness — Send Update</title>
+<style>
+  body {
+    font-family: -apple-system, 'Inter', system-ui, sans-serif;
+    background: #f7f7f5;
+    color: #111;
+    margin: 0;
+    padding: 40px 20px;
+  }
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  .sub {
+    opacity: .5;
+    font-size: 13px;
+    margin-bottom: 30px;
+  }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: .6;
+    margin-bottom: 6px;
+    margin-top: 18px;
+  }
+  input, textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font: inherit;
+    font-size: 14px;
+  }
+  textarea {
+    min-height: 200px;
+    resize: vertical;
+    font-family: monospace;
+    line-height: 1.5;
+  }
+  button {
+    margin-top: 22px;
+    border: 0;
+    border-radius: 8px;
+    background: #111;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button:disabled {
+    opacity: .5;
+    cursor: default;
+  }
+  #status {
+    margin-top: 14px;
+    font-size: 13px;
+  }
+  #status.ok { color: #0a7d2c; }
+  #status.err { color: #b00020; }
+  .row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 18px;
+  }
+  #subCount {
+    font-size: 13px;
+    opacity: .6;
+  }
+  .helper {
+    font-size: 12px;
+    opacity: .45;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>Send an update</h1>
+  <p class="sub">Emails every active subscriber on your list. Not linked from your site — bookmark this page.</p>
+
+  <label for="adminKey">Admin key</label>
+  <input type="password" id="adminKey" placeholder="Paste your ADMIN_KEY">
+  <p class="helper">This stays in your browser only — never sent anywhere except your own server.</p>
+
+  <div class="row">
+    <button id="checkBtn" style="margin-top:0;background:#eee;color:#111;">Check subscriber count</button>
+    <span id="subCount"></span>
+  </div>
+
+  <label for="subject">Subject line</label>
+  <input type="text" id="subject" placeholder="New work from Darkness — August">
+
+  <label for="body">Message (you can write plain text or basic HTML like &lt;p&gt;, &lt;b&gt;, &lt;a href=""&gt;)</label>
+  <textarea id="body" placeholder="Hey! We just wrapped a new project and have a couple of slots open this month..."></textarea>
+
+  <button id="sendBtn">Send to all subscribers</button>
+  <p id="status"></p>
+</div>
+
+<script>
+  const SERVER_URL = "https://darkness-subscribers-hub.onrender.com";
+
+  const keyInput = document.getElementById("adminKey");
+  const subjectInput = document.getElementById("subject");
+  const bodyInput = document.getElementById("body");
+  const sendBtn = document.getElementById("sendBtn");
+  const checkBtn = document.getElementById("checkBtn");
+  const status = document.getElementById("status");
+  const subCount = document.getElementById("subCount");
+
+  // Remember the admin key locally so you don't have to re-type it every time.
+  keyInput.value = localStorage.getItem("darkness_admin_key") || "";
+  keyInput.addEventListener("input", () => {
+    localStorage.setItem("darkness_admin_key", keyInput.value);
+  });
+
+  function setStatus(msg, ok) {
+    status.textContent = msg;
+    status.className = ok ? "ok" : "err";
+  }
+
+  checkBtn.addEventListener("click", async () => {
+    const key = keyInput.value.trim();
+    if (!key) return setStatus("Enter your admin key first.", false);
+
+    subCount.textContent = "Checking…";
+    try {
+      const res = await fetch(`${SERVER_URL}/api/stats`, {
+        headers: { "x-admin-key": key },
+      });
+      const data = await res.json();
+      if (data.ok) {
+        subCount.textContent = `${data.activeSubscribers} active subscriber(s)`;
+      } else {
+        subCount.textContent = "";
+        setStatus(data.error || "Couldn't check — is the key right?", false);
+      }
+    } catch (err) {
+      subCount.textContent = "";
+      setStatus("Couldn't reach the server. Try again.", false);
+    }
+  });
+
+  sendBtn.addEventListener("click", async () => {
+    const key = keyInput.value.trim();
+    const subject = subjectInput.value.trim();
+    const rawBody = bodyInput.value.trim();
+
+    if (!key) return setStatus("Enter your admin key first.", false);
+    if (!subject) return setStatus("Add a subject line.", false);
+    if (!rawBody) return setStatus("Write a message first.", false);
+
+    // If it doesn't look like HTML already, wrap plain text into paragraphs.
+    const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(rawBody);
+    const html = looksLikeHtml
+      ? rawBody
+      : rawBody
+          .split(/\n\s*\n/)
+          .map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`)
+          .join("\n");
+
+    sendBtn.disabled = true;
+    setStatus("Sending… this can take a moment.", true);
+
+    try {
+      const res = await fetch(`${SERVER_URL}/api/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-key": key,
+        },
+        body: JSON.stringify({ subject, html }),
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        setStatus(`Sent to ${data.sent} subscriber(s).`, true);
+        subjectInput.value = "";
+        bodyInput.value = "";
+      } else {
+        setStatus(data.error || "Send failed.", false);
+      }
+    } catch (err) {
+      setStatus("Something went wrong reaching the server.", false);
+    } finally {
+      sendBtn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
