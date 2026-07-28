@@ -35,6 +35,7 @@
     loadProducts();
     loadPromoCodes();
     loadBanners();
+    loadWorkItems();
   }
   function showLogin() {
     if (loginScreen) loginScreen.style.display = 'flex';
@@ -540,6 +541,148 @@
         submitBtn.disabled = false;
       }
     });
+  }
+
+  /* ============================================================
+     WORK / VIDEO REEL
+     ============================================================ */
+  const workForm = document.querySelector('[data-work-form]');
+  const workList = document.querySelector('[data-work-list]');
+  const workMsg = document.querySelector('[data-work-msg]');
+  const workCancelEditBtn = document.querySelector('[data-work-cancel-edit]');
+  let editingWorkId = null;
+
+  function resetWorkForm() {
+    if (!workForm) return;
+    workForm.reset();
+    workForm.show_on_home.checked = true;
+    workForm.is_published.checked = true;
+    editingWorkId = null;
+    workForm.querySelector('[data-work-submit-label]').textContent = 'Add video';
+    if (workCancelEditBtn) workCancelEditBtn.style.display = 'none';
+  }
+  if (workCancelEditBtn) workCancelEditBtn.addEventListener('click', resetWorkForm);
+
+  if (workForm) {
+    workForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!window.supabaseClient) { setMsg(workMsg, 'Supabase is not configured yet.', true); return; }
+
+      const submitBtn = workForm.querySelector('[type="submit"]');
+      submitBtn.disabled = true;
+      setMsg(workMsg, 'Saving…', false);
+
+      try {
+        const videoFile = document.getElementById('w-video').files[0];
+        const posterFile = document.getElementById('w-poster').files[0];
+        const fd = new FormData(workForm);
+
+        const payload = {
+          title: fd.get('title'),
+          show_on_home: fd.get('show_on_home') === 'on',
+          is_published: fd.get('is_published') === 'on',
+        };
+
+        if (videoFile) {
+          const uploaded = await uploadToBucket(videoFile, 'product-media', 'work-videos');
+          payload.video_url = uploaded.url;
+        } else if (!editingWorkId) {
+          throw new Error('Please choose a video file.');
+        }
+
+        if (posterFile) {
+          const uploaded = await uploadToBucket(posterFile, 'product-media', 'work-posters');
+          payload.poster_url = uploaded.url;
+        }
+
+        let result;
+        if (editingWorkId) {
+          result = await window.supabaseClient.from('work_items').update(payload).eq('id', editingWorkId);
+        } else {
+          // New entries go to the end of the current order by default.
+          const { data: maxRow } = await window.supabaseClient
+            .from('work_items').select('sort_order').order('sort_order', { ascending: false }).limit(1);
+          payload.sort_order = maxRow && maxRow.length ? maxRow[0].sort_order + 1 : 0;
+          result = await window.supabaseClient.from('work_items').insert(payload);
+        }
+        if (result.error) throw result.error;
+
+        setMsg(workMsg, editingWorkId ? 'Video updated.' : 'Video added.', false);
+        resetWorkForm();
+        loadWorkItems();
+      } catch (err) {
+        setMsg(workMsg, err.message || 'Something went wrong.', true);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  async function loadWorkItems() {
+    if (!workList || !window.supabaseClient) return;
+    workList.innerHTML = '<p class="admin-empty">Loading…</p>';
+    const { data, error } = await window.supabaseClient
+      .from('work_items').select('*').order('sort_order', { ascending: true });
+
+    if (error) { workList.innerHTML = `<p class="admin-empty">Error: ${error.message}</p>`; return; }
+    if (!data || data.length === 0) { workList.innerHTML = '<p class="admin-empty">No videos yet. Add your first one on the left.</p>'; return; }
+
+    workList.innerHTML = '';
+    data.forEach((item, index) => {
+      const row = document.createElement('div');
+      row.className = 'admin-item';
+      row.innerHTML = `
+        <div class="admin-item__thumb" ${item.poster_url ? `style="background-image:url('${item.poster_url}')"` : ''}></div>
+        <div class="admin-item__body">
+          <h4>${item.title}</h4>
+          <div class="admin-item__meta">${item.is_published ? 'Published' : 'Unpublished'} · ${item.show_on_home ? 'On homepage' : 'All Work page only'}</div>
+        </div>
+        <div class="admin-item__actions">
+          <button data-move-up ${index === 0 ? 'disabled' : ''}>↑</button>
+          <button data-move-down ${index === data.length - 1 ? 'disabled' : ''}>↓</button>
+          <button data-edit>Edit</button>
+          <button data-toggle>${item.is_published ? 'Unpublish' : 'Publish'}</button>
+          <button data-delete class="danger">Delete</button>
+        </div>
+      `;
+      row.querySelector('[data-edit]').addEventListener('click', () => fillWorkFormForEdit(item));
+      row.querySelector('[data-toggle]').addEventListener('click', async () => {
+        const { error } = await window.supabaseClient.from('work_items').update({ is_published: !item.is_published }).eq('id', item.id);
+        if (error) { alert('Error: ' + error.message); return; }
+        loadWorkItems();
+      });
+      row.querySelector('[data-delete]').addEventListener('click', async () => {
+        if (!confirm('Delete this video permanently?')) return;
+        const { error } = await window.supabaseClient.from('work_items').delete().eq('id', item.id);
+        if (error) { alert('Error deleting: ' + error.message); return; }
+        loadWorkItems();
+      });
+      if (index > 0) {
+        row.querySelector('[data-move-up]').addEventListener('click', () => swapWorkOrder(data, index, index - 1));
+      }
+      if (index < data.length - 1) {
+        row.querySelector('[data-move-down]').addEventListener('click', () => swapWorkOrder(data, index, index + 1));
+      }
+      workList.appendChild(row);
+    });
+  }
+
+  async function swapWorkOrder(data, i, j) {
+    const a = data[i], b = data[j];
+    const { error } = await window.supabaseClient.from('work_items').update({ sort_order: b.sort_order }).eq('id', a.id);
+    const { error: error2 } = await window.supabaseClient.from('work_items').update({ sort_order: a.sort_order }).eq('id', b.id);
+    if (error || error2) { alert('Error reordering: ' + ((error || error2).message)); return; }
+    loadWorkItems();
+  }
+
+  function fillWorkFormForEdit(item) {
+    editingWorkId = item.id;
+    workForm.title.value = item.title || '';
+    workForm.show_on_home.checked = !!item.show_on_home;
+    workForm.is_published.checked = !!item.is_published;
+    workForm.querySelector('[data-work-submit-label]').textContent = 'Update video';
+    if (workCancelEditBtn) workCancelEditBtn.style.display = 'inline-flex';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   checkSession();

@@ -90,52 +90,10 @@
 <p class="showcase__sub">A sample of what we've produced and directed for clients.</p>
 <div class="showcase__actions">
 <a class="btn btn--primary" href="assets/video/showreel.mp4" id="watchShowreelBtn"><span>Watch showreel</span></a>
-<a class="btn btn--ghost" href="#work"><span>View all work</span></a>
+<a class="btn btn--ghost" href="work.html"><span>View all work</span></a>
 </div>
-<div class="work-grid">
-
-    <article class="work-card">
-        <video autoplay muted loop playsinline preload="auto">
-            <source src="assets/video/Work/brand-films.mp4" type="video/mp4">
-        </video>
-        <div class="work-overlay">Brand Films</div>
-    </article>
-
-    <article class="work-card">
-        <video autoplay muted loop playsinline preload="auto">
-            <source src="assets/video/Work/product-launches.mp4" type="video/mp4">
-        </video>
-        <div class="work-overlay">Product Launches</div>
-    </article>
-
-    <article class="work-card">
-        <video autoplay muted loop playsinline preload="auto">
-            <source src="assets/video/Work/explainers.mp4" type="video/mp4">
-        </video>
-        <div class="work-overlay">Explainers</div>
-    </article>
-
-    <article class="work-card">
-        <video autoplay muted loop playsinline preload="auto">
-            <source src="assets/video/Work/motion-graphics.mp4" type="video/mp4">
-        </video>
-        <div class="work-overlay">Motion Graphics</div>
-    </article>
-
-    <article class="work-card">
-        <video autoplay muted loop playsinline preload="auto">
-            <source src="assets/video/Work/behind-the-scenes.mp4" type="video/mp4">
-        </video>
-        <div class="work-overlay">Behind The Scenes</div>
-    </article>
-
-    <article class="work-card">
-        <video autoplay muted loop playsinline preload="auto">
-            <source src="assets/video/Work/testimonials.mp4" type="video/mp4">
-        </video>
-        <div class="work-overlay">Testimonials</div>
-    </article>
-
+<div class="work-grid" data-work-grid data-work-home-only="true" data-work-limit="6">
+  <!-- Filled in automatically by work.js from your Work admin tab -->
 </div>
 <!-- ============ ABOUT ============ -->
 <section class="section about" id="about">
@@ -422,8 +380,11 @@
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js?v=2"></script>
 <script src="assets/js/auth.js?v=5"></script>
 <script src="assets/js/main.js?v=5"></script>
 <script src="assets/js/premium.js?v=5"></script>
+<script src="assets/js/work.js"></script>
 </body>
 </html>

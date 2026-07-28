@@ -45,6 +45,7 @@
       <button class="admin-tab" data-section="promo">Promo codes</button>
       <button class="admin-tab" data-section="banners">Banners</button>
       <button class="admin-tab" data-section="subscribers">Subscribers</button>
+      <button class="admin-tab" data-section="work">Work</button>
     </div>
 
     <!-- ============ PRODUCTS SECTION ============ -->
@@ -259,6 +260,55 @@
           </div>
           <p class="admin-msg" data-nl-msg></p>
         </form>
+      </div>
+    </div>
+    <!-- ============ WORK / VIDEO REEL SECTION ============ -->
+    <div class="admin-grid" data-section-panel="work" style="display:none;">
+      <div class="admin-panel">
+        <h2>Add / edit video</h2>
+        <form data-work-form>
+          <div class="admin-field">
+            <label for="w-title">Title / label</label>
+            <input id="w-title" name="title" type="text" placeholder="e.g. Brand Films" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="w-video">Video file</label>
+            <input id="w-video" type="file" accept="video/*">
+            <p class="admin-file-hint">Autoplays muted &amp; loops, same as your current homepage cards. Required for new entries.</p>
+          </div>
+
+          <div class="admin-field">
+            <label for="w-poster">Poster image (optional)</label>
+            <input id="w-poster" type="file" accept="image/*">
+            <p class="admin-file-hint">Shown briefly before the video loads.</p>
+          </div>
+
+          <div class="admin-field--row">
+            <label class="admin-check">
+              <input type="checkbox" name="show_on_home" id="w-home" checked>
+              Show on homepage
+            </label>
+            <label class="admin-check">
+              <input type="checkbox" name="is_published" id="w-published" checked>
+              Published
+            </label>
+          </div>
+
+          <div class="admin-submit-row">
+            <button type="submit" class="btn btn--primary"><span data-work-submit-label>Add video</span></button>
+            <button type="button" class="btn btn--ghost" data-work-cancel-edit style="display:none;"><span>Cancel edit</span></button>
+          </div>
+          <p class="admin-msg" data-work-msg></p>
+        </form>
+      </div>
+
+      <div class="admin-panel">
+        <h2>Existing videos</h2>
+        <p class="admin-file-hint">Use the arrows to reorder — this controls the order on both the homepage and the "All Work" page.</p>
+        <div class="admin-list" data-work-list>
+          <p class="admin-empty">Loading…</p>
+        </div>
       </div>
     </div>
   </main>
