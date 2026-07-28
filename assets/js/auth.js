@@ -51,6 +51,39 @@ const DCAuth = (() => {
     document.dispatchEvent(new CustomEvent('dc-auth-change'));
   }
 
+  /* ---------- Profile (username, etc.) ---------- */
+
+  // Reads the signed-in user's row from the `profiles` table.
+  // NOTE: this assumes the profile row's primary key column is `id`
+  // and equals the auth user id (the standard Supabase profiles setup).
+  // If your table uses `user_id` instead, change `.eq('id', ...)` and
+  // the upsert key below to `user_id`.
+  async function getProfile() {
+    const c = client();
+    const user = await getUser();
+    if (!c || !user) return null;
+    const { data, error } = await c
+      .from('profiles')
+      .select('username')
+      .eq('id', user.id)
+      .maybeSingle();
+    if (error) return null;
+    return data; // { username } or null if no row yet
+  }
+
+  // Saves the username for the signed-in user. Creates the profile row
+  // if it doesn't exist yet (upsert). Returns { data } or { error }.
+  async function updateUsername(username) {
+    const c = client();
+    const user = await getUser();
+    if (!c || !user) return { error: { message: 'You are not signed in.' } };
+    return c
+      .from('profiles')
+      .upsert({ id: user.id, username: username }, { onConflict: 'id' })
+      .select()
+      .maybeSingle();
+  }
+
   /* ---------- Wire up any [data-dc-account] nav slot ---------- */
 
   async function renderAccountSlots() {
@@ -81,5 +114,5 @@ const DCAuth = (() => {
     });
   }
 
-  return { getUser, signUp, signIn, signInWithGoogle, signOut, renderAccountSlots };
+  return { getUser, signUp, signIn, signInWithGoogle, signOut, getProfile, updateUsername, renderAccountSlots };
 })();

@@ -105,11 +105,17 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-config.js?v=2"></script>
-<script src="assets/js/auth.js?v=2"></script>
+<script src="assets/js/supabase-config.js?v=3"></script>
+<script src="assets/js/auth.js?v=3"></script>
 <script>
 (function () {
   const content = document.getElementById('acctContent');
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, (m) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]
+    ));
+  }
 
   async function load() {
     const user = await DCAuth.getUser();
@@ -118,13 +124,34 @@
       return;
     }
 
+    // Fetch the current username (may be null if they haven't set one yet).
+    const profile = await DCAuth.getProfile();
+    const currentUsername = (profile && profile.username) ? profile.username : '';
+
+    // Show username as the heading if set, otherwise fall back to email.
+    const heading = currentUsername || user.email;
+
     content.innerHTML = `
       <div class="acct-header">
         <div>
           <div class="acct-eyebrow">Account</div>
-          <h1 class="acct-title">${user.email}</h1>
+          <h1 class="acct-title">${esc(heading)}</h1>
         </div>
         <button class="acct-logout" id="logoutBtn">Log out</button>
+      </div>
+
+      <div class="acct-section">
+        <h3>Username</h3>
+        <p style="margin-bottom:.9rem;">This is how you'll show up around Darkness. 3–20 characters, letters, numbers and underscores. Must be unique.</p>
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap; align-items:center;">
+          <input type="text" id="usernameInput" placeholder="Choose a username"
+            value="${esc(currentUsername)}"
+            autocomplete="off" spellcheck="false"
+            style="flex:1; min-width:220px; padding:.7rem 1rem; border-radius:var(--radius-md); border:1px solid var(--border); background:var(--surface-2); color:var(--text); font-size:.95rem; font-family:inherit;">
+          <button class="acct-logout" id="saveUsernameBtn"
+            style="border:none; background:var(--text); color:#0a0a0a;">Save</button>
+        </div>
+        <p id="usernameMsg" style="min-height:1.2em; margin-top:.6rem; font-size:.85rem; color:var(--text-faint);"></p>
       </div>
 
       <div class="acct-section">
@@ -136,6 +163,51 @@
     document.getElementById('logoutBtn').addEventListener('click', async () => {
       await DCAuth.signOut();
       window.location.href = 'index.html';
+    });
+
+    /* ---- Username save logic ---- */
+    const input   = document.getElementById('usernameInput');
+    const saveBtn = document.getElementById('saveUsernameBtn');
+    const msg     = document.getElementById('usernameMsg');
+    const title   = document.querySelector('.acct-title');
+
+    function showMsg(text, type) {
+      msg.textContent = text;
+      msg.style.color = type === 'error'   ? '#f87171'
+                      : type === 'success' ? '#34d399'
+                      : 'var(--text-faint)';
+    }
+
+    saveBtn.addEventListener('click', async () => {
+      const val = input.value.trim();
+
+      if (!val) { showMsg('Enter a username first.', 'error'); return; }
+      if (!/^[a-zA-Z0-9_]{3,20}$/.test(val)) {
+        showMsg('3–20 characters — letters, numbers and underscores only.', 'error');
+        return;
+      }
+
+      saveBtn.disabled = true;
+      showMsg('Saving…');
+
+      const result = await DCAuth.updateUsername(val);
+      saveBtn.disabled = false;
+
+      if (result.error) {
+        const taken = result.error.code === '23505'
+          || /duplicate|unique/i.test(result.error.message || '');
+        showMsg(taken ? 'That username is taken — try another.'
+                      : (result.error.message || 'Could not save. Try again.'), 'error');
+        return;
+      }
+
+      showMsg('Saved!', 'success');
+      if (title) title.textContent = val; // update heading live
+    });
+
+    // Let Enter key save too.
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); saveBtn.click(); }
     });
   }
 
