@@ -88,9 +88,19 @@ const DCAuth = (() => {
 
   async function renderAccountSlots() {
     const user = await getUser();
+
+    // If signed in, try to show their username; fall back to email.
+    let label = 'Account';
+    if (user) {
+      label = user.email || 'Account';
+      try {
+        const profile = await getProfile();
+        if (profile && profile.username) label = profile.username;
+      } catch (e) { /* keep email fallback if profile fetch fails */ }
+    }
+
     document.querySelectorAll('[data-dc-account]').forEach((slot) => {
       if (user) {
-        const label = user.email || 'Account';
         slot.innerHTML = `
           <a class="dc-account-name" href="account.html" style="margin-right:.7rem; color:inherit; text-decoration:none;">${label}</a>
           <button class="dc-account-logout" data-dc-logout>Log out</button>
