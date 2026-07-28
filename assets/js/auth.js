@@ -1,109 +1,82 @@
 /* ============================================================
-   DARKNESS CREATIONS — SHARED AUTH (front-end only demo)
+   DARKNESS CREATIONS — SHARED AUTH (real Supabase auth)
    ------------------------------------------------------------
-   There is no real backend/password check here. This simulates
-   a logged-in session using localStorage so that logging in on
-   the Darkness home page also shows as "logged in"
-   on Crispy and the Marketplace, since they share the
-   same origin on GitHub Pages.
-
-   Swap this out for real auth (Supabase, Firebase, Clerk, your
-   own backend, etc.) when you're ready to launch for real.
+   Replaces the old localStorage demo. Uses Supabase Auth for
+   real accounts (email/password + Google), shared across every
+   page on the site via window.supabaseClient.
    ============================================================ */
 
 const DCAuth = (() => {
-  const KEY_NAME  = 'dc_user_name';
-  const KEY_COINS = 'dc_user_coins';
-  const DEFAULT_COINS = 120;
-
-  function getUser() {
-    const name = localStorage.getItem(KEY_NAME);
-    return name ? { name, coins: getCoins() } : null;
+  function client() {
+    return window.supabaseClient || null;
   }
 
-  function getCoins() {
-    const raw = localStorage.getItem(KEY_COINS);
-    return raw ? parseInt(raw, 10) : DEFAULT_COINS;
+  /* ---------- Core actions ---------- */
+
+  async function getUser() {
+    const c = client();
+    if (!c) return null;
+    const { data: { session } } = await c.auth.getSession();
+    return session ? session.user : null;
   }
 
-  function login(name) {
-    localStorage.setItem(KEY_NAME, name);
-    if (!localStorage.getItem(KEY_COINS)) {
-      localStorage.setItem(KEY_COINS, String(DEFAULT_COINS));
-    }
-    document.dispatchEvent(new CustomEvent('dc-auth-change'));
+  async function signUp(email, password) {
+    const c = client();
+    if (!c) return { error: { message: 'Store is not configured yet.' } };
+    return c.auth.signUp({ email, password });
   }
 
-  function logout() {
-    localStorage.removeItem(KEY_NAME);
-    document.dispatchEvent(new CustomEvent('dc-auth-change'));
+  async function signIn(email, password) {
+    const c = client();
+    if (!c) return { error: { message: 'Store is not configured yet.' } };
+    return c.auth.signInWithPassword({ email, password });
   }
 
-  /* ---------- Modal (built once, reused everywhere) ---------- */
-  function buildModal() {
-    if (document.querySelector('.dc-auth-modal')) return;
-
-    const wrap = document.createElement('div');
-    wrap.className = 'dc-auth-modal';
-    wrap.innerHTML = `
-      <div class="dc-auth-modal__backdrop" data-close></div>
-      <div class="dc-auth-modal__box">
-        <button class="dc-auth-modal__x" data-close aria-label="Close">&times;</button>
-        <span class="dc-auth-modal__eyebrow">Darkness</span>
-        <h3>Sign in</h3>
-        <p>One account works across the studio site, the marketplace and Crispy.</p>
-        <form data-dc-login-form>
-          <input type="text" name="name" placeholder="Your name" required autocomplete="name">
-          <button type="submit" class="btn btn--primary" style="width:100%; justify-content:center; margin-top:.9rem;">
-            <span>Continue</span>
-          </button>
-        </form>
-        <p class="dc-auth-modal__note">Demo only — no password needed yet.</p>
-      </div>
-    `;
-    document.body.appendChild(wrap);
-
-    wrap.querySelectorAll('[data-close]').forEach((el) =>
-      el.addEventListener('click', () => wrap.classList.remove('is-open'))
-    );
-    wrap.querySelector('[data-dc-login-form]').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = new FormData(e.target).get('name').toString().trim();
-      if (!name) return;
-      login(name);
-      wrap.classList.remove('is-open');
+  async function signInWithGoogle() {
+    const c = client();
+    if (!c) return { error: { message: 'Store is not configured yet.' } };
+    return c.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + '/account.html' }
     });
   }
 
-  function openModal() {
-    buildModal();
-    document.querySelector('.dc-auth-modal').classList.add('is-open');
+  async function signOut() {
+    const c = client();
+    if (!c) return;
+    await c.auth.signOut();
+    document.dispatchEvent(new CustomEvent('dc-auth-change'));
   }
 
-  /* ---------- Wire up any [data-dc-account] element ---------- */
-  function renderAccountSlots() {
-    const user = getUser();
+  /* ---------- Wire up any [data-dc-account] nav slot ---------- */
+
+  async function renderAccountSlots() {
+    const user = await getUser();
     document.querySelectorAll('[data-dc-account]').forEach((slot) => {
       if (user) {
+        const label = user.email || 'Account';
         slot.innerHTML = `
-          <span class="dc-coin-badge" title="Coins">🪙 ${user.coins}</span>
-          <span class="dc-account-name">${user.name}</span>
+          <a class="dc-account-name" href="account.html" style="margin-right:.7rem; color:inherit; text-decoration:none;">${label}</a>
           <button class="dc-account-logout" data-dc-logout>Log out</button>
         `;
       } else {
-        slot.innerHTML = `<button class="btn btn--ghost dc-login-trigger" data-dc-login><span>Log in</span></button>`;
+        slot.innerHTML = `<a class="btn btn--ghost dc-login-trigger" href="login.html"><span>Log in</span></a>`;
       }
     });
-    document.querySelectorAll('[data-dc-login]').forEach((btn) =>
-      btn.addEventListener('click', openModal)
-    );
     document.querySelectorAll('[data-dc-logout]').forEach((btn) =>
-      btn.addEventListener('click', logout)
+      btn.addEventListener('click', signOut)
     );
   }
 
   document.addEventListener('DOMContentLoaded', renderAccountSlots);
   document.addEventListener('dc-auth-change', renderAccountSlots);
 
-  return { getUser, getCoins, login, logout, openModal };
+  const c = client();
+  if (c) {
+    c.auth.onAuthStateChange(() => {
+      document.dispatchEvent(new CustomEvent('dc-auth-change'));
+    });
+  }
+
+  return { getUser, signUp, signIn, signInWithGoogle, signOut, renderAccountSlots };
 })();

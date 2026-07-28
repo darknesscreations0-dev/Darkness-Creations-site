@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account — Darkness</title>
+<meta name="description" content="Manage your Darkness account and view your purchases.">
+<link rel="icon" type="image/png" href="assets/img/favicon-circle.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/tokens.css?v=1">
+<link rel="stylesheet" href="assets/css/home.css?v=1">
+<link rel="stylesheet" href="assets/css/marketplace.css?v=1">
+
+<style>
+.acct-wrap{
+  max-width:760px;
+  margin:0 auto;
+  padding:clamp(3rem, 7vw, 5rem) var(--gutter) 4rem;
+}
+.acct-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  margin-bottom:2.4rem;
+  flex-wrap:wrap;
+}
+.acct-eyebrow{
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--text-faint);
+  margin-bottom:.5rem;
+}
+.acct-title{
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem, 3.6vw, 2.4rem);
+  font-weight:600;
+  letter-spacing:-.02em;
+}
+.acct-logout{
+  padding:.6rem 1.3rem;
+  border-radius:980px;
+  border:1px solid var(--border);
+  background:none;
+  color:var(--text);
+  font-size:.85rem;
+  font-weight:600;
+  cursor:pointer;
+}
+.acct-logout:hover{ background:var(--surface-2); }
+.acct-section{
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:1.6rem;
+  margin-bottom:1.2rem;
+}
+.acct-section h3{
+  font-size:.95rem;
+  font-weight:600;
+  margin-bottom:.3rem;
+}
+.acct-section p{
+  color:var(--text-faint);
+  font-size:.9rem;
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<header class="nav">
+  <a href="index.html" class="nav__mark" aria-label="Darkness home">
+    <img src="assets/img/logo.png" alt="" class="nav__mark-glyph" aria-hidden="true">
+    Darkness
+  </a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="index.html#about">Studio</a>
+    <a href="index.html#pipeline">Process</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="index.html#ventures">Ventures</a>
+  </nav>
+  <div style="display:flex; align-items:center;">
+    <span data-dc-account style="margin-left:1rem;"></span>
+  </div>
+</header>
+
+<main>
+  <div class="acct-wrap" id="acctContent">
+    <p class="admin-empty">Loading…</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__bottom">
+      <span>© 2026 Darkness. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js?v=2"></script>
+<script src="assets/js/auth.js?v=2"></script>
+<script>
+(function () {
+  const content = document.getElementById('acctContent');
+
+  async function load() {
+    const user = await DCAuth.getUser();
+    if (!user) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    content.innerHTML = `
+      <div class="acct-header">
+        <div>
+          <div class="acct-eyebrow">Account</div>
+          <h1 class="acct-title">${user.email}</h1>
+        </div>
+        <button class="acct-logout" id="logoutBtn">Log out</button>
+      </div>
+
+      <div class="acct-section">
+        <h3>My purchases</h3>
+        <p>Nothing here yet — once checkout is live, everything you buy will show up in this list with instant downloads.</p>
+      </div>
+    `;
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await DCAuth.signOut();
+      window.location.href = 'index.html';
+    });
+  }
+
+  load();
+})();
+</script>
+
+</body>
+</html>
