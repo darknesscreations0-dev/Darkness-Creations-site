@@ -1329,11 +1329,31 @@
     background:#111;
     cursor:pointer;
     aspect-ratio:9/16;
-    transition:transform .45s ease;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-soft);
+    transition:transform .45s var(--ease), box-shadow .45s var(--ease), border-color .45s var(--ease);
+
+    /* stagger the entrance instead of every card popping in at once */
+    opacity:0;
+    animation:workCardIn .7s var(--ease) forwards;
+}
+.work-card:nth-child(1){ animation-delay:.03s; }
+.work-card:nth-child(2){ animation-delay:.09s; }
+.work-card:nth-child(3){ animation-delay:.15s; }
+.work-card:nth-child(4){ animation-delay:.21s; }
+.work-card:nth-child(5){ animation-delay:.27s; }
+.work-card:nth-child(6){ animation-delay:.33s; }
+.work-card:nth-child(n+7){ animation-delay:.36s; }
+
+@keyframes workCardIn{
+    from{ opacity:0; transform:translateY(22px) scale(.97); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
 }
 
 .work-card:hover{
-    transform:translateY(-8px);
+    transform:translateY(-10px);
+    box-shadow:var(--shadow-lift);
+    border-color:var(--border-strong);
 }
 
 .work-card video{
@@ -1341,6 +1361,11 @@
     height:100%;
     object-fit:cover;
     display:block;
+    transition:transform .6s var(--ease);
+}
+
+.work-card:hover video{
+    transform:scale(1.045);
 }
 
 .work-overlay{
@@ -1352,7 +1377,15 @@
     color:#fff;
     font-weight:600;
     font-size:18px;
-    background:linear-gradient(to top,rgba(0,0,0,.8),transparent);
+    background:linear-gradient(to top,rgba(0,0,0,.85),rgba(0,0,0,.35) 55%,transparent);
+    transform:translateY(6px);
+    opacity:.92;
+    transition:transform .45s var(--ease), opacity .45s var(--ease);
+}
+
+.work-card:hover .work-overlay{
+    transform:translateY(0);
+    opacity:1;
 }
 
 /* Responsive */
