@@ -35,9 +35,12 @@ const DCAuth = (() => {
   async function signInWithGoogle() {
     const c = client();
     if (!c) return { error: { message: 'Store is not configured yet.' } };
+    // Build the redirect from the current folder so it works inside a
+    // GitHub Pages subfolder (e.g. /Darkness-Creations-site/), not just the domain root.
+    const basePath = window.location.pathname.replace(/[^/]*$/, '');
     return c.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin + '/account.html' }
+      options: { redirectTo: window.location.origin + basePath + 'account.html' }
     });
   }
 
