@@ -330,10 +330,48 @@
 <div class="container">
 <div class="newsletter__box reveal">
 <h2>Get our content playbooks, monthly.</h2>
-<form class="newsletter__form">
-<input aria-label="Email address" placeholder="you@brand.com" required="" type="email"/>
-<button class="btn btn--primary" type="submit"><span>Subscribe</span></button>
+<form class="newsletter__form" id="newsletterForm">
+<input aria-label="Email address" placeholder="you@brand.com" required="" type="email" id="newsletterEmail"/>
+<button class="btn btn--primary" type="submit" id="newsletterSubmit"><span>Subscribe</span></button>
 </form>
+<p id="newsletterStatus" style="margin-top:10px;font-size:12px;opacity:.6" role="status" aria-live="polite"></p>
+<script>
+  (function () {
+    const SERVER_URL = "https://darkness-subscribers-hub.onrender.com";
+
+    const form = document.getElementById("newsletterForm");
+    const status = document.getElementById("newsletterStatus");
+    const button = document.getElementById("newsletterSubmit");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("newsletterEmail").value.trim();
+
+      button.disabled = true;
+      status.textContent = "Subscribing…";
+
+      try {
+        const res = await fetch(`${SERVER_URL}/api/subscribe`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          status.textContent = data.message || "Subscribed!";
+          form.reset();
+        } else {
+          status.textContent = data.error || "Something went wrong.";
+        }
+      } catch (err) {
+        status.textContent = "Something went wrong. Try again.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+  })();
+</script>
 </div>
 </div>
 </section>
