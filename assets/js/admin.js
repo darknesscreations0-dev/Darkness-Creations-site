@@ -455,5 +455,92 @@
     });
   }
 
+  /* ============================================================
+     SUBSCRIBERS / NEWSLETTER
+     Separate backend (Render server), not Supabase — keeps its
+     own ADMIN_KEY since it's a different service.
+     ============================================================ */
+  const NEWSLETTER_SERVER_URL = 'https://darkness-subscribers-hub.onrender.com';
+  const NL_KEY_STORAGE = 'darkness_admin_key';
+
+  const newsletterForm = document.querySelector('[data-newsletter-form]');
+  const nlSubjectInput = document.getElementById('nl-subject');
+  const nlBodyInput = document.getElementById('nl-body');
+  const nlMsg = document.querySelector('[data-nl-msg]');
+  const nlSubCount = document.querySelector('[data-sub-count]');
+  const checkSubsBtn = document.querySelector('[data-check-subs]');
+
+  function getAdminKey() {
+    let key = localStorage.getItem(NL_KEY_STORAGE);
+    if (!key) {
+      key = prompt('Paste your newsletter server ADMIN_KEY (stored locally in this browser only):');
+      if (key) localStorage.setItem(NL_KEY_STORAGE, key);
+    }
+    return key || '';
+  }
+
+  if (checkSubsBtn) {
+    checkSubsBtn.addEventListener('click', async () => {
+      const key = getAdminKey();
+      if (!key) return;
+      nlSubCount.textContent = 'Checking…';
+      try {
+        const res = await fetch(`${NEWSLETTER_SERVER_URL}/api/stats`, {
+          headers: { 'x-admin-key': key },
+        });
+        const data = await res.json();
+        if (data.ok) {
+          nlSubCount.textContent = `${data.activeSubscribers} active subscriber(s)`;
+        } else {
+          nlSubCount.textContent = '';
+          setMsg(nlMsg, data.error || "Couldn't check — is the key right?", true);
+        }
+      } catch (err) {
+        nlSubCount.textContent = '';
+        setMsg(nlMsg, "Couldn't reach the server. Try again.", true);
+      }
+    });
+  }
+
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const key = getAdminKey();
+      if (!key) return;
+      const subject = nlSubjectInput.value.trim();
+      const rawBody = nlBodyInput.value.trim();
+      if (!subject) return setMsg(nlMsg, 'Add a subject line.', true);
+      if (!rawBody) return setMsg(nlMsg, 'Write a message first.', true);
+
+      const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(rawBody);
+      const html = looksLikeHtml
+        ? rawBody
+        : rawBody.split(/\n\s*\n/).map((p) => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('\n');
+
+      const submitBtn = newsletterForm.querySelector('[type="submit"]');
+      submitBtn.disabled = true;
+      setMsg(nlMsg, 'Sending… this can take a moment.', false);
+
+      try {
+        const res = await fetch(`${NEWSLETTER_SERVER_URL}/api/send`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-key': key },
+          body: JSON.stringify({ subject, html }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          setMsg(nlMsg, `Sent to ${data.sent} subscriber(s).`, false);
+          newsletterForm.reset();
+        } else {
+          setMsg(nlMsg, data.error || 'Send failed.', true);
+        }
+      } catch (err) {
+        setMsg(nlMsg, 'Something went wrong reaching the server.', true);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
   checkSession();
 })();

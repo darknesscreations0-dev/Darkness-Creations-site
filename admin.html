@@ -44,6 +44,7 @@
       <button class="admin-tab is-active" data-section="products">Products</button>
       <button class="admin-tab" data-section="promo">Promo codes</button>
       <button class="admin-tab" data-section="banners">Banners</button>
+      <button class="admin-tab" data-section="subscribers">Subscribers</button>
     </div>
 
     <!-- ============ PRODUCTS SECTION ============ -->
@@ -229,6 +230,35 @@
         <div class="admin-list" data-banner-list>
           <p class="admin-empty">Loading…</p>
         </div>
+      </div>
+    </div>
+    <!-- ============ SUBSCRIBERS SECTION ============ -->
+    <div class="admin-grid" data-section-panel="subscribers" style="display:none;">
+      <div class="admin-panel">
+        <h2>Send an update</h2>
+        <p class="admin-file-hint">Emails every active subscriber on your list. Uses a separate key from your Supabase login.</p>
+        <form data-newsletter-form>
+          <div class="admin-field">
+            <label for="nl-subject">Subject line</label>
+            <input id="nl-subject" name="subject" type="text" placeholder="New work from Darkness — August" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="nl-body">Message</label>
+            <textarea id="nl-body" name="body" placeholder="Hey! We just wrapped a new project and have a couple of slots open this month..." style="min-height:200px;font-family:monospace;line-height:1.5;"></textarea>
+            <p class="admin-file-hint">Plain text or basic HTML like &lt;p&gt;, &lt;b&gt;, &lt;a href=""&gt;.</p>
+          </div>
+
+          <div class="admin-submit-row">
+            <button type="button" class="btn btn--ghost" data-check-subs><span>Check subscriber count</span></button>
+            <span data-sub-count style="font-size:.85rem; opacity:.6; align-self:center;"></span>
+          </div>
+
+          <div class="admin-submit-row">
+            <button type="submit" class="btn btn--primary"><span>Send to all subscribers</span></button>
+          </div>
+          <p class="admin-msg" data-nl-msg></p>
+        </form>
       </div>
     </div>
   </main>
