@@ -270,6 +270,18 @@
   letter-spacing:-0.025em;
   line-height:1.08;
 }
+.section__title em,
+.section__title .script{
+  font-style:normal;
+  background:linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.section__title .script{
+  font-family:var(--font-script);
+  font-style:italic;
+}
 .section__lead{
   margin-top:1.1rem;
   color:var(--text-dim);
@@ -1329,9 +1341,7 @@
     background:#111;
     cursor:pointer;
     aspect-ratio:9/16;
-    border:1px solid var(--border);
-    box-shadow:var(--shadow-soft);
-    transition:transform .45s var(--ease), box-shadow .45s var(--ease), border-color .45s var(--ease);
+    transition:transform .45s var(--ease);
 
     /* stagger the entrance instead of every card popping in at once */
     opacity:0;
@@ -1352,8 +1362,6 @@
 
 .work-card:hover{
     transform:translateY(-10px);
-    box-shadow:var(--shadow-lift);
-    border-color:var(--border-strong);
 }
 
 .work-card video{
